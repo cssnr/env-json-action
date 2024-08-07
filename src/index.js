@@ -23,8 +23,8 @@ const dotenv = require('dotenv')
         } else {
             return core.setFailed(`Invalid type: ${type}`)
         }
-        console.log('data:', data)
-        console.log('result:', result)
+        // console.log('data:', data)
+        // console.log('result:', result)
 
         // Write File
         if (dest) {

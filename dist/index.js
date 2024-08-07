@@ -27207,8 +27207,8 @@ const dotenv = __nccwpck_require__(2437)
         } else {
             return core.setFailed(`Invalid type: ${type}`)
         }
-        console.log('data:', data)
-        console.log('result:', result)
+        // console.log('data:', data)
+        // console.log('result:', result)
 
         // Write File
         if (dest) {
