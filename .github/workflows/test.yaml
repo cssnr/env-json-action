@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: "Test to JSON"
-        id: test
+        id: json
         uses: ./
         with:
           source: .github/test/test.env
@@ -23,11 +23,11 @@ jobs:
 
       - name: "Echo JSON"
         run: |
-          echo '${{ steps.test.outputs.result }}'
+          echo '${{ steps.json.outputs.result }}'
           cat .github/test/results.json
 
       - name: "Test to Environment"
-        id: test
+        id: env
         uses: ./
         with:
           source: .github/test/test.json
@@ -36,7 +36,7 @@ jobs:
 
       - name: "Echo Environment"
         run: |
-          echo '${{ steps.test.outputs.result }}'
+          echo '${{ steps.env.outputs.result }}'
           cat .github/test/results.env
 
   lint:
