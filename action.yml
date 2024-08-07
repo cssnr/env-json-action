@@ -1,0 +1,26 @@
+name: "Env to JSON"
+description: "Convert Environment File to/from a JSON File"
+author: "Shane"
+branding:
+  icon: "code"
+  color: "green"
+
+inputs:
+  source:
+    description: "Source File Path"
+    required: true
+  type:
+    description: "Output Type"
+    required: false
+    default: "json"
+  dest:
+    description: "Output File"
+    required: false
+
+outputs:
+  result:
+    description: "Conversion Results"
+
+runs:
+  using: "node20"
+  main: "dist/index.js"
