@@ -34,7 +34,7 @@ Convert Environment File to/from a JSON File. Creates an output with the results
 
 ```yaml
 - name: 'Parse Environment'
-  uses: smashedr/env-json-action@master
+  uses: cssnr/env-json-action@master
 ```
 
 ## Outputs
@@ -46,7 +46,7 @@ Convert Environment File to/from a JSON File. Creates an output with the results
 ```yaml
 - name: 'Parse Environment'
   id: parse
-  uses: cssnr/env-json-action@v1
+  uses: cssnr/env-json-action@master
 
 - name: "Echo Result"
   run: echo '${{ steps.parse.outputs.result }}'
@@ -68,7 +68,7 @@ If you are experiencing an issue/bug or getting unexpected results, you can:
 - Report an Issue: https://github.com/cssnr/env-json-action/issues
 - Chat with us on Discord: https://discord.gg/wXy6m2X8wY
 - Provide General
-  Feedback: [https://cssnr.github.io/feedback/](https://cssnr.github.io/feedback/?app=Update%20JSON%20Value)
+  Feedback: [https://cssnr.github.io/feedback/](https://cssnr.github.io/feedback/?app=Env%20JSON%20Action)
 
 # Contributing
 
@@ -78,7 +78,7 @@ Additionally, you can support other GitHub Actions I have published:
 
 - [VirusTotal Action](https://github.com/cssnr/virustotal-action)
 - [Update Version Tags Action](https://github.com/cssnr/update-version-tags-action)
-- [Update JSON Value Action](https://github.com/cssnr/env-json-action)
+- [Update JSON Value Action](https://github.com/cssnr/update-json-value-action)
 - [Parse Issue Form Action](https://github.com/cssnr/parse-issue-form-action)
 - [Portainer Stack Deploy](https://github.com/cssnr/portainer-stack-deploy-action)
 - [Mozilla Addon Update Action](https://github.com/cssnr/mozilla-addon-update-action)
