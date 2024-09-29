@@ -28,5 +28,5 @@ jobs:
           #owner: cssnr
           #repo: mirror-repository-action
           create: true
-          username: cssnr
+          username: shaner
           password: ${{ secrets.CODEBERG_TOKEN }}
