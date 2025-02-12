@@ -4,13 +4,13 @@
   "singleQuote": true,
   "overrides": [
     {
-      "files": ["**/*.json", "**/*.yaml", "**/*.yml"],
+      "files": ["**/*.html", "**/*.yaml", "**/*.yml"],
       "options": {
         "singleQuote": false
       }
     },
     {
-      "files": ["**/*.js"],
+      "files": ["**/*.js", "**/*.css", "**/*.scss"],
       "options": {
         "tabWidth": 4
       }
