@@ -1,4 +1,4 @@
-[![Tags](https://img.shields.io/github/actions/workflow/status/cssnr/env-json-action/tags.yaml?logo=github&logoColor=white&label=tags)](https://github.com/cssnr/env-json-action/actions/workflows/tags.yaml)
+[![Release](https://img.shields.io/github/actions/workflow/status/cssnr/env-json-action/release.yaml?logo=github&logoColor=white&label=release)](https://github.com/cssnr/env-json-action/actions/workflows/release.yaml)
 [![Test](https://img.shields.io/github/actions/workflow/status/cssnr/env-json-action/test.yaml?logo=github&logoColor=white&label=test)](https://github.com/cssnr/env-json-action/actions/workflows/test.yaml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_env-json-action&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_env-json-action)
 [![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/env-json-action?logo=github)](https://github.com/cssnr/env-json-action/releases/latest)
@@ -10,13 +10,13 @@
 
 # Environment to/from JSON Action
 
-Convert Environment File to/from a JSON File. Creates an output with the results and optionally writes to a file.
-
 - [Inputs](#Inputs)
 - [Outputs](#Outputs)
 - [Examples](#Examples)
 - [Support](#Support)
 - [Contributing](#Contributing)
+
+Convert Environment File to/from a JSON File. Creates an output with the results and optionally writes to a file.
 
 > [!NOTE]  
 > Please submit
