@@ -6,6 +6,10 @@ on:
   push:
     branches: [master]
 
+env:
+  ENV_FILE: .github/test/test.env
+  JSON_FILE: .github/test/test.json
+
 jobs:
   test:
     name: "Test"
@@ -24,7 +28,7 @@ jobs:
         id: json
         uses: ./
         with:
-          source: .github/test/test.env
+          source: ${{ env.ENV_FILE }}
           dest: .github/test/results.json
 
       - name: "Verify JSON"
@@ -42,7 +46,7 @@ jobs:
         uses: ./
         if: ${{ !github.event.act }}
         with:
-          source: .github/test/test.json
+          source: ${{ env.JSON_FILE }}
           dest: .github/test/results.env
           type: "env"
           sensitive: true

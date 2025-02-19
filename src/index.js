@@ -10,7 +10,7 @@ const dotenv = require('dotenv')
         const inputs = parseInputs()
         console.log('inputs:', inputs)
 
-        // let data
+        // Process Data
         let result
         if (inputs.type === 'json') {
             core.info('⌛ Processing env -> json')
@@ -24,14 +24,14 @@ const dotenv = require('dotenv')
             return core.setFailed(`Invalid type: ${inputs.type}`)
         }
         // console.log('data:', data)
-        console.log('result:', result)
+        // console.log('result:', result)
 
         // Set Secret
         if (inputs.sensitive) {
             core.info('🕵️ Setting Sensitive')
             core.setSecret(result)
         }
-        console.log('result:', result)
+        // console.log('result:', result)
 
         // Write File
         if (inputs.dest) {

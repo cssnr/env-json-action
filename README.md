@@ -76,6 +76,8 @@ Convert Environment File to/from a JSON File. Creates an output with the results
 - name: 'Parse Environment'
   id: parse
   uses: cssnr/env-json-action@master
+  with:
+    source: test.env
 
 - name: 'Echo Result'
   run: echo '${{ steps.parse.outputs.result }}'
@@ -83,7 +85,9 @@ Convert Environment File to/from a JSON File. Creates an output with the results
 
 ## Examples
 
-For now, you can check out the `Test` job here: [.github/workflows/test.yaml](.github/workflows/test.yaml)
+Some more examples in the test workflow: [.github/workflows/test.yaml](.github/workflows/test.yaml)
+
+To see this used in a deploy workflow, see: https://github.com/cssnr/django5-boiler/blob/master/.github/workflows/deploy.yaml
 
 # Support
 
