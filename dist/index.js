@@ -27935,6 +27935,7 @@ const core = __nccwpck_require__(7484)
 const fs = __nccwpck_require__(9896)
 const dotenv = __nccwpck_require__(8889)
 
+const { setCommandEcho } = __nccwpck_require__(7484)
 ;(async () => {
     try {
         core.info('🏳️ Starting Environment to/from JSON Action')
@@ -27959,13 +27960,19 @@ const dotenv = __nccwpck_require__(8889)
         // console.log('data:', data)
         // console.log('result:', result)
 
+        // Set Secret
+        if (inputs.sensitive) {
+            core.info('🕵️ Setting Sensitive')
+            core.setSecret(result)
+        }
+
         // Write File
         if (inputs.dest) {
             core.info(`💾 \u001b[32mWriring Results: ${inputs.dest}`)
             fs.writeFileSync(inputs.dest, result + '\n')
         }
 
-        // Set Output
+        // Set Outputs
         core.info('📩 Setting Outputs')
         core.setOutput('result', result)
 
@@ -27973,8 +27980,6 @@ const dotenv = __nccwpck_require__(8889)
         if (inputs.summary) {
             core.info('📝 Writing Job Summary')
             await writeSummary(inputs, result)
-        } else {
-            core.info('⏩ Skipping Job Summary')
         }
 
         core.info('✅ \u001b[32;1mFinished Success')
@@ -28000,13 +28005,14 @@ function toEnv(data) {
 
 /**
  * @function parseInputs
- * @return {{source: string, type: string, dest: string, summary: boolean}}
+ * @return {{source: string, type: string, dest: string, sensitive: boolean, summary: boolean}}
  */
 function parseInputs() {
     return {
         source: core.getInput('source', { required: true }),
         type: core.getInput('type', { required: true }).toLowerCase(),
         dest: core.getInput('dest'),
+        sensitive: core.getBooleanInput('sensitive'),
         summary: core.getBooleanInput('summary'),
     }
 }
@@ -28018,14 +28024,19 @@ function parseInputs() {
  * @return {Promise<void>}
  */
 async function writeSummary(inputs, result) {
-    core.summary.addRaw('### Environment to/from JSON Action\n')
-    const icon = inputs.dest ? '✔️' : '❌'
-    core.summary.addRaw(`💾 ${icon} \`${inputs.dest}\`\n`)
+    const prep = inputs.target === 'json' ? 'to' : 'from'
+    core.summary.addRaw(`### Environment ${prep} JSON Action`)
 
-    core.summary.addRaw('<details><summary>Results</summary>\n\n')
-    const type = inputs.type === 'json' ? 'json' : 'text'
-    core.summary.addRaw(`\`\`\`${type}\n${result}\n\`\`\``)
-    core.summary.addRaw('\n\n</details>\n')
+    if (inputs.dest) {
+        core.summary.addRaw(`💾 ✔️ \`${inputs.dest}\`\n`)
+    }
+
+    if (!inputs.sensitive) {
+        core.summary.addRaw('<details><summary>Results</summary>\n\n')
+        const type = inputs.type === 'json' ? 'json' : 'text'
+        core.summary.addRaw(`\`\`\`${type}\n${result}\n\`\`\``)
+        core.summary.addRaw('\n\n</details>\n')
+    }
 
     core.summary.addRaw('<details><summary>Inputs</summary>')
     core.summary.addTable([
@@ -28036,6 +28047,8 @@ async function writeSummary(inputs, result) {
         [{ data: 'source' }, { data: `<code>${inputs.source}</code>` }],
         [{ data: 'type' }, { data: `<code>${inputs.type}</code>` }],
         [{ data: 'dest' }, { data: `<code>${inputs.dest}</code>` }],
+        [{ data: 'sensitive' }, { data: `<code>${inputs.sensitive}</code>` }],
+        [{ data: 'summary' }, { data: `<code>${inputs.summary}</code>` }],
     ])
     core.summary.addRaw('</details>\n')
 

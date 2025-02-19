@@ -25,14 +25,17 @@ Convert Environment File to/from a JSON File. Creates an output with the results
 
 ## Inputs
 
-| input   | required | default | description                          |
-| ------- | -------- | ------- | ------------------------------------ |
-| source  | Yes      | -       | Environment or JSON Source File Path |
-| type    | No       | `json`  | Output Type: [json, env] \*          |
-| dest    | No       | -       | Optional Output File to Write Too    |
-| summary | No       | `true`  | Add Summary to Job \*                |
+| input     | required | default | description                          |
+| --------- | -------- | ------- | ------------------------------------ |
+| source    | Yes      | -       | Source Environment or JSON File Path |
+| type      | No       | `json`  | Output Type: [json, env] \*          |
+| dest      | No       | -       | Optional File to Write Data Too      |
+| sensitive | No       | `false` | Sensitive Data \*                    |
+| summary   | No       | `true`  | Add Summary to Job \*                |
 
 **type** - By default this converts env to json. To perform json to env, use type `env`.
+
+**sensitive** - Set to `true` if data is sensitive and should be masked.
 
 **summary** - Write a Summary for the job. To disable this set to `false`.
 

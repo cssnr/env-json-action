@@ -16,6 +16,10 @@ inputs:
   dest:
     description: "Output File"
     required: false
+  sensitive:
+    description: "Sensitive Data"
+    required: false
+    default: "false"
   summary:
     description: "Add Summary to Job"
     required: false

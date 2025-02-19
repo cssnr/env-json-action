@@ -6,6 +6,10 @@ on:
   push:
     branches: [master]
 
+#env:
+#  SENSITIVE: false
+#  SUMMARY: true
+
 jobs:
   test:
     name: "Test"
@@ -26,6 +30,8 @@ jobs:
         with:
           source: .github/test/test.env
           dest: .github/test/results.json
+          #sensitive: ${{ env.SENSITIVE }}
+          #summary: ${{ env.SUMMARY }}
 
       - name: "Echo JSON"
         run: |
@@ -35,12 +41,17 @@ jobs:
       - name: "Test to Environment"
         id: env
         uses: ./
+        if: ${{ !github.event.act }}
         with:
           source: .github/test/test.json
           dest: .github/test/results.env
           type: "env"
+          sensitive: true
+          #sensitive: ${{ env.SENSITIVE }}
+          #summary: ${{ env.SUMMARY }}
 
       - name: "Echo Environment"
+        if: ${{ !github.event.act }}
         run: |
           echo '${{ steps.env.outputs.result }}'
           cat .github/test/results.env
@@ -54,7 +65,7 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v4
 
-      - name: "Setup Node"
+      - name: "Setup Node 20"
         uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -73,7 +84,7 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v4
 
-      - name: "Setup Node"
+      - name: "Setup Node 20"
         uses: actions/setup-node@v4
         with:
           node-version: 20
