@@ -1,5 +1,5 @@
 name: "Env to JSON"
-description: "Convert Environment File to/from a JSON File"
+description: "Convert an Environment File to or from JSON."
 author: "Shane"
 branding:
   icon: "code"
@@ -16,6 +16,14 @@ inputs:
   dest:
     description: "Output File"
     required: false
+  sensitive:
+    description: "Sensitive Data"
+    required: false
+    default: "false"
+  summary:
+    description: "Add Summary to Job"
+    required: false
+    default: "true"
 
 outputs:
   result:

@@ -6,6 +6,10 @@ on:
   push:
     branches: [master]
 
+env:
+  ENV_FILE: .github/test/test.env
+  JSON_FILE: .github/test/test.json
+
 jobs:
   test:
     name: "Test"
@@ -16,30 +20,46 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v4
 
+      #- name: "Debug event.json"
+      #  run: |
+      #    cat "${GITHUB_EVENT_PATH}"
+
       - name: "Test to JSON"
         id: json
         uses: ./
         with:
-          source: .github/test/test.env
+          source: ${{ env.ENV_FILE }}
           dest: .github/test/results.json
 
-      - name: "Echo JSON"
+      - name: "Verify JSON"
         run: |
           echo '${{ steps.json.outputs.result }}'
           cat .github/test/results.json
+          set -e
+          if [ '${{ steps.json.outputs.result }}' != "$(cat .github/test/results.json)" ];then
+            echo "JSON Verification Failed: results.json"
+            exit 1
+          fi
 
       - name: "Test to Environment"
         id: env
         uses: ./
+        if: ${{ !github.event.act }}
         with:
-          source: .github/test/test.json
+          source: ${{ env.JSON_FILE }}
           dest: .github/test/results.env
           type: "env"
+          sensitive: true
 
-      - name: "Echo Environment"
+      - name: "Verify Environment"
+        if: ${{ !github.event.act }}
         run: |
           echo '${{ steps.env.outputs.result }}'
           cat .github/test/results.env
+          if [ '${{ steps.env.outputs.result }}' != "$(cat .github/test/results.env)" ];then
+            echo "Environment Verification Failed: results.env"
+            exit 1
+          fi
 
   lint:
     name: "Lint"
@@ -50,7 +70,7 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v4
 
-      - name: "Setup Node"
+      - name: "Setup Node 20"
         uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -69,7 +89,7 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v4
 
-      - name: "Setup Node"
+      - name: "Setup Node 20"
         uses: actions/setup-node@v4
         with:
           node-version: 20
