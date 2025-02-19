@@ -1,5 +1,5 @@
 name: "Env to JSON"
-description: "Convert Environment File to/from a JSON File"
+description: "Convert an Environment File to or from JSON."
 author: "Shane"
 branding:
   icon: "code"

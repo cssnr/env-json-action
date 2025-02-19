@@ -8,7 +8,7 @@
 [![GitHub Org Stars](https://img.shields.io/github/stars/cssnr?style=flat&logo=github&logoColor=white)](https://cssnr.github.io/)
 [![Discord](https://img.shields.io/discord/899171661457293343?logo=discord&logoColor=white&label=discord&color=7289da)](https://discord.gg/wXy6m2X8wY)
 
-# Environment to/from JSON Action
+# Environment to or from JSON Action
 
 - [Inputs](#Inputs)
 - [Outputs](#Outputs)
@@ -16,7 +16,7 @@
 - [Support](#Support)
 - [Contributing](#Contributing)
 
-Convert Environment File to/from a JSON File. Creates an output with the results and optionally writes to a file.
+Convert an Environment File to or from JSON for Outputs or Writing to a File.
 
 > [!NOTE]  
 > Please submit
