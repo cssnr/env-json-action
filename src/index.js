@@ -2,7 +2,6 @@ const core = require('@actions/core')
 const fs = require('fs')
 const dotenv = require('dotenv')
 
-const { setCommandEcho } = require('@actions/core')
 ;(async () => {
     try {
         core.info('🏳️ Starting Environment to/from JSON Action')
@@ -91,8 +90,8 @@ function parseInputs() {
  * @return {Promise<void>}
  */
 async function writeSummary(inputs, result) {
-    const prep = inputs.target === 'json' ? 'to' : 'from'
-    core.summary.addRaw(`### Environment ${prep} JSON Action`)
+    const prep = inputs.type === 'json' ? 'to' : 'from'
+    core.summary.addRaw(`### Environment ${prep} JSON Action\n`)
 
     if (inputs.dest) {
         core.summary.addRaw(`💾 ✔️ \`${inputs.dest}\`\n`)

@@ -27935,7 +27935,6 @@ const core = __nccwpck_require__(7484)
 const fs = __nccwpck_require__(9896)
 const dotenv = __nccwpck_require__(8889)
 
-const { setCommandEcho } = __nccwpck_require__(7484)
 ;(async () => {
     try {
         core.info('🏳️ Starting Environment to/from JSON Action')
@@ -28024,8 +28023,8 @@ function parseInputs() {
  * @return {Promise<void>}
  */
 async function writeSummary(inputs, result) {
-    const prep = inputs.target === 'json' ? 'to' : 'from'
-    core.summary.addRaw(`### Environment ${prep} JSON Action`)
+    const prep = inputs.type === 'json' ? 'to' : 'from'
+    core.summary.addRaw(`### Environment ${prep} JSON Action\n`)
 
     if (inputs.dest) {
         core.summary.addRaw(`💾 ✔️ \`${inputs.dest}\`\n`)

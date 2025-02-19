@@ -43,7 +43,17 @@ Convert Environment File to/from a JSON File. Creates an output with the results
 
 ---
 
-Coming Soon...
+💾 ✔️ `.github/test/results.json`
+
+<details><summary>Results</summary>
+
+```json
+{ "VAR1": "success", "VAR2": "2" }
+```
+
+</details>
+<details><summary>Inputs</summary><table><tr><th>Input</th><th>Value</th></tr><tr><td>source</td><td><code>.github/test/test.env</code></td></tr><tr><td>type</td><td><code>json</code></td></tr><tr><td>dest</td><td><code>.github/test/results.json</code></td></tr><tr><td>sensitive</td><td><code>false</code></td></tr><tr><td>summary</td><td><code>true</code></td></tr></table>
+</details>
 
 ---
 
