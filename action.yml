@@ -16,6 +16,10 @@ inputs:
   dest:
     description: "Output File"
     required: false
+  summary:
+    description: "Add Summary to Job"
+    required: false
+    default: "true"
 
 outputs:
   result:
