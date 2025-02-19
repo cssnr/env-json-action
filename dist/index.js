@@ -27957,13 +27957,14 @@ const dotenv = __nccwpck_require__(8889)
             return core.setFailed(`Invalid type: ${inputs.type}`)
         }
         // console.log('data:', data)
-        // console.log('result:', result)
+        console.log('result:', result)
 
         // Set Secret
         if (inputs.sensitive) {
             core.info('🕵️ Setting Sensitive')
             core.setSecret(result)
         }
+        console.log('result:', result)
 
         // Write File
         if (inputs.dest) {

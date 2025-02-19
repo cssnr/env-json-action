@@ -6,10 +6,6 @@ on:
   push:
     branches: [master]
 
-#env:
-#  SENSITIVE: false
-#  SUMMARY: true
-
 jobs:
   test:
     name: "Test"
@@ -30,13 +26,16 @@ jobs:
         with:
           source: .github/test/test.env
           dest: .github/test/results.json
-          #sensitive: ${{ env.SENSITIVE }}
-          #summary: ${{ env.SUMMARY }}
 
-      - name: "Echo JSON"
+      - name: "Verify JSON"
         run: |
           echo '${{ steps.json.outputs.result }}'
           cat .github/test/results.json
+          set -e
+          if [ '${{ steps.json.outputs.result }}' != "$(cat .github/test/results.json)" ];then
+            echo "JSON Verification Failed: results.json"
+            exit 1
+          fi
 
       - name: "Test to Environment"
         id: env
@@ -47,14 +46,16 @@ jobs:
           dest: .github/test/results.env
           type: "env"
           sensitive: true
-          #sensitive: ${{ env.SENSITIVE }}
-          #summary: ${{ env.SUMMARY }}
 
-      - name: "Echo Environment"
+      - name: "Verify Environment"
         if: ${{ !github.event.act }}
         run: |
           echo '${{ steps.env.outputs.result }}'
           cat .github/test/results.env
+          if [ '${{ steps.env.outputs.result }}' != "$(cat .github/test/results.env)" ];then
+            echo "Environment Verification Failed: results.env"
+            exit 1
+          fi
 
   lint:
     name: "Lint"
