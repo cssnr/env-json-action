@@ -85,9 +85,10 @@ Convert an Environment File to or from JSON for Outputs or Writing to a File.
 
 ## Examples
 
-Some more examples in the test workflow: [.github/workflows/test.yaml](.github/workflows/test.yaml)
+There are some more examples in the test workflow: [.github/workflows/test.yaml](.github/workflows/test.yaml)
 
-To see this used in a deploy workflow, see: https://github.com/cssnr/django5-boiler/blob/master/.github/workflows/deploy.yaml
+For a full deploy workflow example, see:  
+https://github.com/cssnr/django5-boiler/blob/master/.github/workflows/deploy.yaml
 
 # Support
 

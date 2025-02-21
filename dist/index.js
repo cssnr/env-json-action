@@ -27941,7 +27941,9 @@ const dotenv = __nccwpck_require__(8889)
 
         // Parse Inputs
         const inputs = parseInputs()
+        core.startGroup('Inputs')
         console.log('inputs:', inputs)
+        core.endGroup() // Inputs
 
         // Process Data
         let result
@@ -28025,7 +28027,7 @@ function parseInputs() {
  */
 async function writeSummary(inputs, result) {
     const prep = inputs.type === 'json' ? 'to' : 'from'
-    core.summary.addRaw(`### Environment ${prep} JSON Action\n`)
+    core.summary.addRaw(`## Environment ${prep} JSON Action\n`)
 
     if (inputs.dest) {
         core.summary.addRaw(`💾 ✔️ \`${inputs.dest}\`\n`)
@@ -28054,7 +28056,7 @@ async function writeSummary(inputs, result) {
 
     const text = 'View Documentation, Report Issues or Request Features'
     const link = 'https://github.com/cssnr/env-json-action'
-    core.summary.addRaw(`\n[${text}](${link}?tab=readme-ov-file#readme)`)
+    core.summary.addRaw(`\n[${text}](${link}?tab=readme-ov-file#readme)\n\n---`)
     await core.summary.write()
 }
 
