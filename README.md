@@ -1,5 +1,6 @@
 [![Release](https://img.shields.io/github/actions/workflow/status/cssnr/env-json-action/release.yaml?logo=github&logoColor=white&label=release)](https://github.com/cssnr/env-json-action/actions/workflows/release.yaml)
 [![Test](https://img.shields.io/github/actions/workflow/status/cssnr/env-json-action/test.yaml?logo=github&logoColor=white&label=test)](https://github.com/cssnr/env-json-action/actions/workflows/test.yaml)
+[![Lint](https://img.shields.io/github/actions/workflow/status/cssnr/env-json-action/lint.yaml?logo=github&logoColor=white&label=lint)](https://github.com/cssnr/env-json-action/actions/workflows/lint.yaml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_env-json-action&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_env-json-action)
 [![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/env-json-action?logo=github)](https://github.com/cssnr/env-json-action/releases/latest)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/env-json-action?logo=github&logoColor=white&label=updated)](https://github.com/cssnr/env-json-action/graphs/commit-activity)
