@@ -73,20 +73,6 @@ function toEnv(data) {
 }
 
 /**
- * @function parseInputs
- * @return {{source: string, type: string, dest: string, sensitive: boolean, summary: boolean}}
- */
-function parseInputs() {
-    return {
-        source: core.getInput('source', { required: true }),
-        type: core.getInput('type', { required: true }).toLowerCase(),
-        dest: core.getInput('dest'),
-        sensitive: core.getBooleanInput('sensitive'),
-        summary: core.getBooleanInput('summary'),
-    }
-}
-
-/**
  * @function writeSummary
  * @param {Object} inputs
  * @param {String} result
@@ -125,4 +111,24 @@ async function writeSummary(inputs, result) {
     const link = 'https://github.com/cssnr/env-json-action'
     core.summary.addRaw(`\n[${text}](${link}?tab=readme-ov-file#readme)\n\n---`)
     await core.summary.write()
+}
+
+/**
+ * @function parseInputs
+ * @return {{
+ *   source: string,
+ *   type: string,
+ *   dest: string,
+ *   sensitive: boolean,
+ *   summary: boolean
+ * }}
+ */
+function parseInputs() {
+    return {
+        source: core.getInput('source', { required: true }),
+        type: core.getInput('type', { required: true }).toLowerCase(),
+        dest: core.getInput('dest'),
+        sensitive: core.getBooleanInput('sensitive'),
+        summary: core.getBooleanInput('summary'),
+    }
 }
