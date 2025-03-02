@@ -40,7 +40,7 @@ Convert an Environment File to or from JSON for Outputs or Writing to a File.
 
 **summary** - Write a Summary for the job. To disable this set to `false`.
 
-<details><summary>📜 View Example Summary</summary>
+<details><summary>👀 View Example Summary</summary>
 
 ---
 
