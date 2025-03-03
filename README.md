@@ -28,7 +28,7 @@ Convert an Environment File to or from JSON for Outputs or Writing to a File.
 | input     | required | default | description                          |
 | --------- | :------: | ------- | ------------------------------------ |
 | source    | **Yes**  | -       | Source Environment or JSON File Path |
-| type      |    -     | `json`  | Output Type: [json, env] \*          |
+| type      |    -     | `json`  | Output Type: [`json`, `env`] \*      |
 | dest      |    -     | -       | Optional File to Write Data Too      |
 | sensitive |    -     | `false` | Sensitive Data \*                    |
 | summary   |    -     | `true`  | Add Summary to Job \*                |
@@ -105,8 +105,7 @@ If you are experiencing an issue/bug or getting unexpected results, you can:
 
 - Report an Issue: https://github.com/cssnr/env-json-action/issues
 - Chat with us on Discord: https://discord.gg/wXy6m2X8wY
-- Provide General
-  Feedback: [https://cssnr.github.io/feedback/](https://cssnr.github.io/feedback/?app=Env%20JSON%20Action)
+- Provide General Feedback: [https://cssnr.github.io/feedback/](https://cssnr.github.io/feedback/?app=Env%20JSON%20Action)
 
 # Contributing
 
