@@ -60,8 +60,7 @@ Convert an Environment File to or from JSON for Outputs or Writing to a File.
 </details>
 
 To see a workflow run you can view a recent
-[test.yaml run](https://github.com/cssnr/env-json-action/actions/workflows/test.yaml)
-_(requires login)_.
+[test.yaml run](https://github.com/cssnr/env-json-action/actions/workflows/test.yaml) _(requires login)_.
 
 ```yaml
 - name: 'Parse Environment'
