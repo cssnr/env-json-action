@@ -27,12 +27,12 @@ Convert an Environment File to or from JSON for Outputs or Writing to a File.
 ## Inputs
 
 | input     | required | default | description                          |
-| --------- | -------- | ------- | ------------------------------------ |
-| source    | Yes      | -       | Source Environment or JSON File Path |
-| type      | No       | `json`  | Output Type: [json, env] \*          |
-| dest      | No       | -       | Optional File to Write Data Too      |
-| sensitive | No       | `false` | Sensitive Data \*                    |
-| summary   | No       | `true`  | Add Summary to Job \*                |
+| --------- | :------: | ------- | ------------------------------------ |
+| source    | **Yes**  | -       | Source Environment or JSON File Path |
+| type      |    -     | `json`  | Output Type: [json, env] \*          |
+| dest      |    -     | -       | Optional File to Write Data Too      |
+| sensitive |    -     | `false` | Sensitive Data \*                    |
+| summary   |    -     | `true`  | Add Summary to Job \*                |
 
 **type** - By default this converts env to json. To perform json to env, use type `env`.
 
@@ -61,7 +61,7 @@ Convert an Environment File to or from JSON for Outputs or Writing to a File.
 </details>
 
 To see a workflow run you can view a recent
-[test.yaml workflow run](https://github.com/cssnr/env-json-action/actions/workflows/test.yaml)
+[test.yaml run](https://github.com/cssnr/env-json-action/actions/workflows/test.yaml)
 _(requires login)_.
 
 ```yaml
