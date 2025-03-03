@@ -20,8 +20,7 @@
 Convert an Environment File to or from JSON for Outputs or Writing to a File.
 
 > [!NOTE]  
-> Please submit
-> a [Feature Request](https://github.com/cssnr/env-json-action/discussions/categories/feature-requests)
+> Please submit a [Feature Request](https://github.com/cssnr/env-json-action/discussions/categories/feature-requests)
 > for new features or [Open an Issue](https://github.com/cssnr/env-json-action/issues) if you find any bugs.
 
 ## Inputs
