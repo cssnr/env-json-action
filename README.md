@@ -1,5 +1,6 @@
 [![Release](https://img.shields.io/github/actions/workflow/status/cssnr/env-json-action/release.yaml?logo=github&logoColor=white&label=release)](https://github.com/cssnr/env-json-action/actions/workflows/release.yaml)
 [![Test](https://img.shields.io/github/actions/workflow/status/cssnr/env-json-action/test.yaml?logo=github&logoColor=white&label=test)](https://github.com/cssnr/env-json-action/actions/workflows/test.yaml)
+[![Lint](https://img.shields.io/github/actions/workflow/status/cssnr/env-json-action/lint.yaml?logo=github&logoColor=white&label=lint)](https://github.com/cssnr/env-json-action/actions/workflows/lint.yaml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=cssnr_env-json-action&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=cssnr_env-json-action)
 [![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/env-json-action?logo=github)](https://github.com/cssnr/env-json-action/releases/latest)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/cssnr/env-json-action?logo=github&logoColor=white&label=updated)](https://github.com/cssnr/env-json-action/graphs/commit-activity)
@@ -19,19 +20,18 @@
 Convert an Environment File to or from JSON for Outputs or Writing to a File.
 
 > [!NOTE]  
-> Please submit
-> a [Feature Request](https://github.com/cssnr/env-json-action/discussions/categories/feature-requests)
+> Please submit a [Feature Request](https://github.com/cssnr/env-json-action/discussions/categories/feature-requests)
 > for new features or [Open an Issue](https://github.com/cssnr/env-json-action/issues) if you find any bugs.
 
 ## Inputs
 
 | input     | required | default | description                          |
-| --------- | -------- | ------- | ------------------------------------ |
-| source    | Yes      | -       | Source Environment or JSON File Path |
-| type      | No       | `json`  | Output Type: [json, env] \*          |
-| dest      | No       | -       | Optional File to Write Data Too      |
-| sensitive | No       | `false` | Sensitive Data \*                    |
-| summary   | No       | `true`  | Add Summary to Job \*                |
+| --------- | :------: | ------- | ------------------------------------ |
+| source    | **Yes**  | -       | Source Environment or JSON File Path |
+| type      |    -     | `json`  | Output Type: [`json`, `env`] \*      |
+| dest      |    -     | -       | Optional File to Write Data Too      |
+| sensitive |    -     | `false` | Sensitive Data \*                    |
+| summary   |    -     | `true`  | Add Summary to Job \*                |
 
 **type** - By default this converts env to json. To perform json to env, use type `env`.
 
@@ -39,7 +39,7 @@ Convert an Environment File to or from JSON for Outputs or Writing to a File.
 
 **summary** - Write a Summary for the job. To disable this set to `false`.
 
-<details><summary>📜 View Example Summary</summary>
+<details><summary>👀 View Example Summary</summary>
 
 ---
 
@@ -58,6 +58,9 @@ Convert an Environment File to or from JSON for Outputs or Writing to a File.
 ---
 
 </details>
+
+To see a workflow run you can view a recent
+[test.yaml run](https://github.com/cssnr/env-json-action/actions/workflows/test.yaml) _(requires login)_.
 
 ```yaml
 - name: 'Parse Environment'
@@ -101,8 +104,7 @@ If you are experiencing an issue/bug or getting unexpected results, you can:
 
 - Report an Issue: https://github.com/cssnr/env-json-action/issues
 - Chat with us on Discord: https://discord.gg/wXy6m2X8wY
-- Provide General
-  Feedback: [https://cssnr.github.io/feedback/](https://cssnr.github.io/feedback/?app=Env%20JSON%20Action)
+- Provide General Feedback: [https://cssnr.github.io/feedback/](https://cssnr.github.io/feedback/?app=Env%20JSON%20Action)
 
 # Contributing
 
@@ -117,7 +119,8 @@ Additionally, you can support other GitHub Actions I have published:
 - [Update Version Tags Action](https://github.com/cssnr/update-version-tags-action?tab=readme-ov-file#readme)
 - [Update JSON Value Action](https://github.com/cssnr/update-json-value-action?tab=readme-ov-file#readme)
 - [Parse Issue Form Action](https://github.com/cssnr/parse-issue-form-action?tab=readme-ov-file#readme)
-- [Mozilla Addon Update Action](https://github.com/cssnr/mozilla-addon-update-action?tab=readme-ov-file#readme)
 - [Cloudflare Purge Cache Action](https://github.com/cssnr/cloudflare-purge-cache-action?tab=readme-ov-file#readme)
+- [Mozilla Addon Update Action](https://github.com/cssnr/mozilla-addon-update-action?tab=readme-ov-file#readme)
+- [Docker Tags Action](https://github.com/cssnr/docker-tags-action?tab=readme-ov-file#readme)
 
 For a full list of current projects to support visit: [https://cssnr.github.io/](https://cssnr.github.io/)
