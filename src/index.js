@@ -6,10 +6,10 @@ const dotenv = require('dotenv')
     try {
         core.info('🏳️ Starting Environment to/from JSON Action')
 
-        // Parse Inputs
-        const inputs = parseInputs()
+        // Inputs
+        const inputs = getInputs()
         core.startGroup('Inputs')
-        console.log('inputs:', inputs)
+        console.log(inputs)
         core.endGroup() // Inputs
 
         // Process Data
@@ -45,10 +45,15 @@ const dotenv = require('dotenv')
         core.info('📩 Setting Outputs')
         core.setOutput('result', result)
 
-        // Job Summary
+        // Summary
         if (inputs.summary) {
             core.info('📝 Writing Job Summary')
-            await writeSummary(inputs, result)
+            try {
+                await addSummary(inputs, result)
+            } catch (e) {
+                console.log(e)
+                core.error(`Error writing Job Summary ${e.message}`)
+            }
         }
 
         core.info('✅ \u001b[32;1mFinished Success')
@@ -73,12 +78,12 @@ function toEnv(data) {
 }
 
 /**
- * @function writeSummary
+ * @function addSummary
  * @param {Object} inputs
  * @param {String} result
  * @return {Promise<void>}
  */
-async function writeSummary(inputs, result) {
+async function addSummary(inputs, result) {
     const prep = inputs.type === 'json' ? 'to' : 'from'
     core.summary.addRaw(`## Environment ${prep} JSON Action\n`)
 
@@ -114,16 +119,16 @@ async function writeSummary(inputs, result) {
 }
 
 /**
- * @function parseInputs
- * @return {{
- *   source: string,
- *   type: string,
- *   dest: string,
- *   sensitive: boolean,
- *   summary: boolean
- * }}
+ * Get Inputs
+ * @typedef {Object} Inputs
+ * @property {String} source
+ * @property {String} type
+ * @property {String|undefined} dest
+ * @property {Boolean} sensitive
+ * @property {Boolean} summary
+ * @return {Inputs}
  */
-function parseInputs() {
+function getInputs() {
     return {
         source: core.getInput('source', { required: true }),
         type: core.getInput('type', { required: true }).toLowerCase(),
