@@ -1,7 +1,7 @@
 [![GitHub Tag Major](https://img.shields.io/github/v/tag/cssnr/env-json-action?sort=semver&filter=!v*.*&logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/env-json-action/tags)
 [![GitHub Tag Minor](https://img.shields.io/github/v/tag/cssnr/env-json-action?sort=semver&filter=!v*.*.*&logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/env-json-action/releases)
 [![GitHub Release Version](https://img.shields.io/github/v/release/cssnr/env-json-action?logo=git&logoColor=white&labelColor=585858&label=%20)](https://github.com/cssnr/env-json-action/releases/latest)
-[![GitHub Dist Size](https://img.shields.io/github/size/cssnr/env-json-action/dist%2Findex.js?logo=bookstack&logoColor=white&label=dist%20size)](https://github.com/cssnr/env-json-action/blob/master/src/index.ts)
+[![GitHub Dist Size](https://img.shields.io/github/size/cssnr/env-json-action/dist%2Findex.js?logo=bookstack&logoColor=white&label=dist%20size)](https://github.com/cssnr/env-json-action/blob/master/src/index.js)
 [![Workflow Release](https://img.shields.io/github/actions/workflow/status/cssnr/env-json-action/release.yaml?logo=cachet&label=release)](https://github.com/cssnr/env-json-action/actions/workflows/release.yaml)
 [![Workflow Test](https://img.shields.io/github/actions/workflow/status/cssnr/env-json-action/test.yaml?logo=cachet&label=test)](https://github.com/cssnr/env-json-action/actions/workflows/test.yaml)
 [![Workflow Lint](https://img.shields.io/github/actions/workflow/status/cssnr/env-json-action/lint.yaml?logo=cachet&label=lint)](https://github.com/cssnr/env-json-action/actions/workflows/lint.yaml)
