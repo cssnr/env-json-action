@@ -22,41 +22,51 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v4
 
-      #- name: "Debug event.json"
-      #  run: |
-      #    cat "${GITHUB_EVENT_PATH}"
+      - name: "Debug CTX github"
+        if: ${{ !github.event.act }}
+        continue-on-error: true
+        env:
+          GITHUB_CTX: ${{ toJSON(github) }}
+        run: echo "$GITHUB_CTX"
 
-      - name: "1: Test to JSON"
+      - name: "1: Test: ENV -> JSON"
         id: json
         uses: ./
         with:
-          source: ${{ env.ENV_FILE }}
-          dest: .github/test/results.json
+          summary: ${{ !github.event.act }}
+          source-data: ${{ env.ENV_FILE }}
+          #source-type: "env"
+          output-file: .github/test/results.json
+          #output-type: "json"
 
-      - name: "1: Verify JSON"
+      - name: "1: Verify: ENV -> JSON"
+        #if: ${{ !github.event.act }}
         run: |
           echo '${{ steps.json.outputs.result }}'
+          echo '--------'
           cat .github/test/results.json
-          set -e
           if [ '${{ steps.json.outputs.result }}' != "$(cat .github/test/results.json)" ];then
             echo "JSON Verification Failed: results.json"
             exit 1
           fi
 
-      - name: "2: Test to Environment"
-        if: ${{ !github.event.act }}
+      - name: "2: Test: JSON -> ENV"
+        #if: ${{ !github.event.act }}
         id: env
         uses: ./
         with:
-          source: ${{ env.JSON_FILE }}
-          dest: .github/test/results.env
-          type: "env"
+          summary: ${{ !github.event.act }}
+          source-data: ${{ env.JSON_FILE }}
+          source-type: "json"
+          output-file: .github/test/results.env
+          #output-type: "env"
           sensitive: true
 
-      - name: "2: Verify Environment"
-        if: ${{ !github.event.act }}
+      - name: "2: Verify: JSON -> ENV"
+        #if: ${{ !github.event.act }}
         run: |
           echo '${{ steps.env.outputs.result }}'
+          echo '--------'
           cat .github/test/results.env
           if [ '${{ steps.env.outputs.result }}' != "$(cat .github/test/results.env)" ];then
             echo "Environment Verification Failed: results.env"

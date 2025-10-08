@@ -6,23 +6,30 @@ branding:
   color: "green"
 
 inputs:
-  source:
-    description: "Source File Path"
+  source-data:
+    description: "Source Data or File Path"
     required: true
+  source:
+    description: "Source Data or File Path"
+    deprecationMessage: "Input has changed to: source-type"
+  source-type:
+    description: "Source Type"
+    default: "env"
   type:
+    description: "Source Type"
+    deprecationMessage: "Input has changed to: source-type"
+  output-type:
     description: "Output Type"
-    required: false
-    default: "json"
+  output-file:
+    description: "Output File Path"
   dest:
-    description: "Output File"
-    required: false
+    description: "Output File Path"
+    deprecationMessage: "Input has changed to: output-file"
   sensitive:
     description: "Sensitive Data"
-    required: false
     default: "false"
   summary:
     description: "Add Summary to Job"
-    required: false
     default: "true"
 
 outputs:
