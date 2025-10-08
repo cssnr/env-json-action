@@ -29,6 +29,7 @@ var require$$6 = require('string_decoder');
 var require$$0$9 = require('diagnostics_channel');
 var require$$2$2 = require('child_process');
 var require$$6$1 = require('timers');
+var require$$1$6 = require('node:fs');
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -27706,7 +27707,7 @@ function requireSrc () {
 	if (hasRequiredSrc) return src;
 	hasRequiredSrc = 1;
 	const core = requireCore();
-	const fs = require$$1;
+	const fs = require$$1$6;
 	const dotenv = requireMain()
 
 	;(async () => {
