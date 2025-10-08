@@ -27254,7 +27254,7 @@ function requireCore () {
 
 var main = {exports: {}};
 
-var version = "17.2.2";
+var version = "17.2.3";
 var require$$4 = {
 	version: version};
 
@@ -27276,9 +27276,12 @@ function requireMain () {
 	  '🔐 encrypt with Dotenvx: https://dotenvx.com',
 	  '🔐 prevent committing .env to code: https://dotenvx.com/precommit',
 	  '🔐 prevent building .env in docker: https://dotenvx.com/prebuild',
-	  '📡 observe env with Radar: https://dotenvx.com/radar',
-	  '📡 auto-backup env with Radar: https://dotenvx.com/radar',
-	  '📡 version env with Radar: https://dotenvx.com/radar',
+	  '📡 add observability to secrets: https://dotenvx.com/ops',
+	  '👥 sync secrets across teammates & machines: https://dotenvx.com/ops',
+	  '🗂️ backup and recover secrets: https://dotenvx.com/ops',
+	  '✅ audit secrets and track compliance: https://dotenvx.com/ops',
+	  '🔄 add secrets lifecycle management: https://dotenvx.com/ops',
+	  '🔑 add access controls to secrets: https://dotenvx.com/ops',
 	  '🛠️  run anywhere with `dotenvx run -- yourcommand`',
 	  '⚙️  specify custom .env file path with { path: \'/custom/path/.env\' }',
 	  '⚙️  enable debug logging with { debug: true }',
@@ -27716,33 +27719,75 @@ function requireSrc () {
 	        console.log(inputs);
 	        core.endGroup(); // Inputs
 
-	        // Process Data
-	        let result;
-	        if (inputs.type === 'json') {
-	            core.info('⌛ Processing env -> json');
-	            const data = dotenv.parse(fs.readFileSync(inputs.source, 'utf-8'));
-	            result = JSON.stringify(data);
-	        } else if (inputs.type === 'env') {
-	            core.info('⌛ Processing json -> env');
-	            const data = JSON.parse(fs.readFileSync(inputs.source, 'utf-8'));
-	            result = toEnv(data);
-	        } else {
-	            return core.setFailed(`Invalid type: ${inputs.type}`)
+	        // Verify Inputs
+	        if (!inputs.sourceData) return core.setFailed(`Missing Input: source`)
+	        if (!['json', 'env'].includes(inputs.sourceType)) {
+	            return core.setFailed(`Invalid source-type: ${inputs.sourceType}`)
 	        }
-	        // console.log('data:', data)
-	        // console.log('result:', result)
+	        if (!inputs.outputType) {
+	            inputs.outputType = inputs.sourceType === 'json' ? 'env' : 'json';
+	        }
+	        if (!['json', 'env'].includes(inputs.outputType)) {
+	            return core.setFailed(`Invalid output-type: ${inputs.outputType}`)
+	        }
+	        core.info(`🔁 Converting: ${inputs.sourceType} -> ${inputs.outputType}`);
+
+	        // Process Data
+	        /** @type {Object} */
+	        let source = {};
+	        if (inputs.sourceType === 'json') {
+	            core.info('⌛ Processing Source: JSON');
+	            if (fs.existsSync(inputs.sourceData)) {
+	                core.info('JSON File...');
+	                source = JSON.parse(fs.readFileSync(inputs.sourceData, 'utf-8'));
+	            } else {
+	                core.info('JSON Input...');
+	                source = JSON.stringify(inputs.sourceData);
+	            }
+	        } else if (inputs.sourceType === 'env') {
+	            core.info('⌛ Processing Source: ENV');
+	            if (fs.existsSync(inputs.sourceData)) {
+	                core.info('Environment File...');
+	                source = dotenv.parse(fs.readFileSync(inputs.sourceData, 'utf-8'));
+	            } else {
+	                core.info('Environment Input...');
+	                for (let name of inputs.sourceData.split('\n')) {
+	                    console.log(`name: ${name} - value: ${process.env[name]}`); // DELETE
+	                    if (name && process.env[name]) {
+	                        source[name] = process.env[name];
+	                    }
+	                }
+	            }
+	        }
+
+	        console.log('-- SOURCE DATA --\n', source, '\n-----------------'); // DELETE
+
+	        /** @type {String} */
+	        let result;
+	        if (inputs.outputType === 'json') {
+	            core.info('Generating Result using: JSON.stringify');
+	            result = JSON.stringify(source);
+	        } else {
+	            core.info('Generating Result using: toEnv');
+	            result = toEnv(source);
+	        }
+
+	        console.log(`---- RESULT -----\n${result}\n-----------------`); // DELETE
 
 	        // Set Secret
 	        if (inputs.sensitive) {
 	            core.info('🕵️ Setting Sensitive');
 	            core.setSecret(result);
+	            for (const value of Object.values(source)) {
+	                console.log('core.setSecret:', value); // DELETE
+	                core.setSecret(value.toString());
+	            }
 	        }
-	        // console.log('result:', result)
 
 	        // Write File
-	        if (inputs.dest) {
-	            core.info(`💾 \u001b[32mWriring Results: ${inputs.dest}`);
-	            fs.writeFileSync(inputs.dest, result + '\n');
+	        if (inputs.outputFile) {
+	            core.info(`💾 \u001b[32mWriring Results: ${inputs.outputFile}`);
+	            fs.writeFileSync(inputs.outputFile, result + '\n');
 	        }
 
 	        // Set Outputs
@@ -27788,17 +27833,15 @@ function requireSrc () {
 	 * @return {Promise<void>}
 	 */
 	async function addSummary(inputs, result) {
-	    const prep = inputs.type === 'json' ? 'to' : 'from';
-	    core.summary.addRaw(`## Environment ${prep} JSON Action\n`);
+	    core.summary.addRaw(`## Environment to/from JSON Action\n`);
 
-	    if (inputs.dest) {
-	        core.summary.addRaw(`💾 ✔️ \`${inputs.dest}\`\n`);
+	    if (inputs.outputFile) {
+	        core.summary.addRaw(`💾 ✔️ \`${inputs.outputFile}\`\n`);
 	    }
 
 	    if (!inputs.sensitive) {
 	        core.summary.addRaw('<details><summary>Results</summary>\n\n');
-	        const type = inputs.type === 'json' ? 'json' : 'text';
-	        core.summary.addRaw(`\`\`\`${type}\n${result}\n\`\`\``);
+	        core.summary.addRaw(`\`\`\`${inputs.outputType}\n${result}\n\`\`\``);
 	        core.summary.addRaw('\n\n</details>\n');
 	    }
 
@@ -27808,9 +27851,10 @@ function requireSrc () {
 	            { data: 'Input', header: true },
 	            { data: 'Value', header: true },
 	        ],
-	        [{ data: 'source' }, { data: `<code>${inputs.source}</code>` }],
-	        [{ data: 'type' }, { data: `<code>${inputs.type}</code>` }],
-	        [{ data: 'dest' }, { data: `<code>${inputs.dest}</code>` }],
+	        [{ data: 'sourceData' }, { data: `<code>${inputs.sourceData}</code>` }],
+	        [{ data: 'sourceType' }, { data: `<code>${inputs.sourceType}</code>` }],
+	        [{ data: 'outputType' }, { data: `<code>${inputs.outputType}</code>` }],
+	        [{ data: 'outputFile' }, { data: `<code>${inputs.outputFile}</code>` }],
 	        [{ data: 'sensitive' }, { data: `<code>${inputs.sensitive}</code>` }],
 	        [{ data: 'summary' }, { data: `<code>${inputs.summary}</code>` }],
 	    ]);
@@ -27825,18 +27869,20 @@ function requireSrc () {
 	/**
 	 * Get Inputs
 	 * @typedef {Object} Inputs
-	 * @property {String} source
-	 * @property {String} type
-	 * @property {String|undefined} dest
+	 * @property {String} sourceData
+	 * @property {String} sourceType
+	 * @property {String} outputType
+	 * @property {String} outputFile
 	 * @property {Boolean} sensitive
 	 * @property {Boolean} summary
 	 * @return {Inputs}
 	 */
 	function getInputs() {
 	    return {
-	        source: core.getInput('source', { required: true }),
-	        type: core.getInput('type', { required: true }).toLowerCase(),
-	        dest: core.getInput('dest'),
+	        sourceData: core.getInput('source-data') || core.getInput('source'),
+	        sourceType: core.getInput('source-type') || core.getInput('type'),
+	        outputType: core.getInput('output-type') || core.getInput('output'),
+	        outputFile: core.getInput('output-file') || core.getInput('dest'),
 	        sensitive: core.getBooleanInput('sensitive'),
 	        summary: core.getBooleanInput('summary'),
 	    }
