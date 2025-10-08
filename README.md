@@ -35,14 +35,14 @@ Convert an Environment File to or from JSON for Outputs or Writing to a File.
 
 ## Inputs
 
-| Input       |  Default   | Description&nbsp;of&nbsp;Input     |
-| ----------- | :--------: | ---------------------------------- |
-| source-data | _Required_ | Source Data or File Path           |
-| source-type |   `json`   | Source Type: [`json`, `env`]       |
-| output-type | _Opposite_ | Output Type: [`json`, `env`]       |
-| output-file |     -      | Optional File to Write Output Data |
-| sensitive   |  `false`   | Mark Output Data as Sensitive      |
-| summary     |   `true`   | Add Summary to Job                 |
+| Input                       |  Default   | Description&nbsp;of&nbsp;Input     |
+| :-------------------------- | :--------: | :--------------------------------- |
+| [source-data](#source-data) | _Required_ | Source Data or File Path           |
+| [source-type](#source-type) |   `json`   | Source Type: [`json`, `env`]       |
+| [output-type](#output-type) | _Opposite_ | Output Type: [`json`, `env`]       |
+| [output-file](#output-file) |     -      | Optional File to Write Output Data |
+| [sensitive](#sensitive)     |  `false`   | Mark Output Data as Sensitive      |
+| [summary](#summary)         |   `true`   | Add Summary to Job                 |
 
 #### source-data
 
@@ -106,7 +106,7 @@ To see a workflow run you can view a recent
 - name: 'Parse Environment'
   uses: cssnr/env-json-action@master
   with:
-    source: test.env
+    source-data: test.env
 ```
 
 ## Outputs
@@ -120,7 +120,7 @@ To see a workflow run you can view a recent
   id: parse
   uses: cssnr/env-json-action@master
   with:
-    source: test.env
+    source-data: test.env
 
 - name: 'Echo Result'
   run: echo '${{ steps.parse.outputs.result }}'
@@ -129,9 +129,6 @@ To see a workflow run you can view a recent
 ## Examples
 
 There are some more examples in the test workflow: [.github/workflows/test.yaml](.github/workflows/test.yaml)
-
-For a full deploy workflow example, see:  
-https://github.com/cssnr/django5-boiler/blob/master/.github/workflows/deploy.yaml
 
 For more examples, you can check out other projects using this action:  
 https://github.com/cssnr/env-json-action/network/dependents

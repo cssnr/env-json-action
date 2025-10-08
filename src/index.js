@@ -45,15 +45,14 @@ const dotenv = require('dotenv')
             } else {
                 core.info('Environment Input...')
                 for (let name of inputs.sourceData.split('\n')) {
-                    console.log(`name: ${name} - value: ${process.env[name]}`) // DELETE
+                    // console.log(`name: ${name} - value: ${process.env[name]}`)
                     if (name && process.env[name]) {
                         source[name] = process.env[name]
                     }
                 }
             }
         }
-
-        console.log('-- SOURCE DATA --\n', source, '\n-----------------') // DELETE
+        // console.log('-- SOURCE DATA --\n', source, '\n-----------------')
 
         /** @type {String} */
         let result
@@ -64,15 +63,14 @@ const dotenv = require('dotenv')
             core.info('Generating Result using: toEnv')
             result = toEnv(source)
         }
-
-        console.log(`---- RESULT -----\n${result}\n-----------------`) // DELETE
+        // console.log(`---- RESULT -----\n${result}\n-----------------`)
 
         // Set Secret
         if (inputs.sensitive) {
             core.info('🕵️ Setting Sensitive')
             core.setSecret(result)
             for (const value of Object.values(source)) {
-                console.log('core.setSecret:', value) // DELETE
+                // console.log('core.setSecret:', value)
                 core.setSecret(value.toString())
             }
         }
