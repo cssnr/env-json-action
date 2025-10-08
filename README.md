@@ -27,7 +27,9 @@
 - [Support](#Support)
 - [Contributing](#Contributing)
 
-Convert an Environment File to or from JSON for Outputs or Writing to a File.
+Convert Environment File, Data or Keys, to or from, JSON Data or File.
+
+Also allows masking the data as secret (only viable for source files since inputs are exposed).
 
 > [!NOTE]  
 > Please submit a [Feature Request](https://github.com/cssnr/env-json-action/discussions/categories/feature-requests)
@@ -111,8 +113,8 @@ To see a workflow run you can view a recent
 
 ## Outputs
 
-| output | description                 |
-| ------ | --------------------------- |
+| Output | Description                 |
+| :----- | :-------------------------- |
 | result | JSON or Environment Results |
 
 ```yaml
