@@ -1,35 +1,33 @@
-'use strict';
-
-var require$$0 = require('os');
-var require$$0$1 = require('crypto');
-var require$$1 = require('fs');
-var require$$1$5 = require('path');
-var require$$2 = require('http');
-var require$$3 = require('https');
-var require$$0$4 = require('net');
-var require$$1$1 = require('tls');
-var require$$4$1 = require('events');
-var require$$0$3 = require('assert');
-var require$$0$2 = require('util');
-var require$$0$5 = require('stream');
-var require$$7 = require('buffer');
-var require$$8 = require('querystring');
-var require$$14 = require('stream/web');
-var require$$0$7 = require('node:stream');
-var require$$1$2 = require('node:util');
-var require$$0$6 = require('node:events');
-var require$$0$8 = require('worker_threads');
-var require$$2$1 = require('perf_hooks');
-var require$$5 = require('util/types');
-var require$$4$2 = require('async_hooks');
-var require$$1$3 = require('console');
-var require$$1$4 = require('url');
-var require$$3$1 = require('zlib');
-var require$$6 = require('string_decoder');
-var require$$0$9 = require('diagnostics_channel');
-var require$$2$2 = require('child_process');
-var require$$6$1 = require('timers');
-var require$$1$6 = require('node:fs');
+import fs from 'node:fs';
+import require$$1$1 from 'fs';
+import require$$1 from 'path';
+import require$$0 from 'os';
+import require$$3 from 'crypto';
+import require$$2 from 'http';
+import require$$3$1 from 'https';
+import require$$0$3 from 'net';
+import require$$1$2 from 'tls';
+import require$$4$1 from 'events';
+import require$$0$2 from 'assert';
+import require$$0$1 from 'util';
+import require$$0$4 from 'stream';
+import require$$7 from 'buffer';
+import require$$8 from 'querystring';
+import require$$14 from 'stream/web';
+import require$$0$6 from 'node:stream';
+import require$$1$3 from 'node:util';
+import require$$0$5 from 'node:events';
+import require$$0$7 from 'worker_threads';
+import require$$2$1 from 'perf_hooks';
+import require$$5 from 'util/types';
+import require$$4$2 from 'async_hooks';
+import require$$1$4 from 'console';
+import require$$1$5 from 'url';
+import require$$3$2 from 'zlib';
+import require$$6 from 'string_decoder';
+import require$$0$8 from 'diagnostics_channel';
+import require$$2$2 from 'child_process';
+import require$$6$1 from 'timers';
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
@@ -37,7 +35,456 @@ function getDefaultExportFromCjs (x) {
 	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
 }
 
-var src = {};
+var main$2 = {exports: {}};
+
+var version = "17.2.3";
+var require$$4 = {
+	version: version};
+
+var hasRequiredMain$1;
+
+function requireMain$1 () {
+	if (hasRequiredMain$1) return main$2.exports;
+	hasRequiredMain$1 = 1;
+	const fs = require$$1$1;
+	const path = require$$1;
+	const os = require$$0;
+	const crypto = require$$3;
+	const packageJson = require$$4;
+
+	const version = packageJson.version;
+
+	// Array of tips to display randomly
+	const TIPS = [
+	  '🔐 encrypt with Dotenvx: https://dotenvx.com',
+	  '🔐 prevent committing .env to code: https://dotenvx.com/precommit',
+	  '🔐 prevent building .env in docker: https://dotenvx.com/prebuild',
+	  '📡 add observability to secrets: https://dotenvx.com/ops',
+	  '👥 sync secrets across teammates & machines: https://dotenvx.com/ops',
+	  '🗂️ backup and recover secrets: https://dotenvx.com/ops',
+	  '✅ audit secrets and track compliance: https://dotenvx.com/ops',
+	  '🔄 add secrets lifecycle management: https://dotenvx.com/ops',
+	  '🔑 add access controls to secrets: https://dotenvx.com/ops',
+	  '🛠️  run anywhere with `dotenvx run -- yourcommand`',
+	  '⚙️  specify custom .env file path with { path: \'/custom/path/.env\' }',
+	  '⚙️  enable debug logging with { debug: true }',
+	  '⚙️  override existing env vars with { override: true }',
+	  '⚙️  suppress all logs with { quiet: true }',
+	  '⚙️  write to custom object with { processEnv: myObject }',
+	  '⚙️  load multiple .env files with { path: [\'.env.local\', \'.env\'] }'
+	];
+
+	// Get a random tip from the tips array
+	function _getRandomTip () {
+	  return TIPS[Math.floor(Math.random() * TIPS.length)]
+	}
+
+	function parseBoolean (value) {
+	  if (typeof value === 'string') {
+	    return !['false', '0', 'no', 'off', ''].includes(value.toLowerCase())
+	  }
+	  return Boolean(value)
+	}
+
+	function supportsAnsi () {
+	  return process.stdout.isTTY // && process.env.TERM !== 'dumb'
+	}
+
+	function dim (text) {
+	  return supportsAnsi() ? `\x1b[2m${text}\x1b[0m` : text
+	}
+
+	const LINE = /(?:^|^)\s*(?:export\s+)?([\w.-]+)(?:\s*=\s*?|:\s+?)(\s*'(?:\\'|[^'])*'|\s*"(?:\\"|[^"])*"|\s*`(?:\\`|[^`])*`|[^#\r\n]+)?\s*(?:#.*)?(?:$|$)/mg;
+
+	// Parse src into an Object
+	function parse (src) {
+	  const obj = {};
+
+	  // Convert buffer to string
+	  let lines = src.toString();
+
+	  // Convert line breaks to same format
+	  lines = lines.replace(/\r\n?/mg, '\n');
+
+	  let match;
+	  while ((match = LINE.exec(lines)) != null) {
+	    const key = match[1];
+
+	    // Default undefined or null to empty string
+	    let value = (match[2] || '');
+
+	    // Remove whitespace
+	    value = value.trim();
+
+	    // Check if double quoted
+	    const maybeQuote = value[0];
+
+	    // Remove surrounding quotes
+	    value = value.replace(/^(['"`])([\s\S]*)\1$/mg, '$2');
+
+	    // Expand newlines if double quoted
+	    if (maybeQuote === '"') {
+	      value = value.replace(/\\n/g, '\n');
+	      value = value.replace(/\\r/g, '\r');
+	    }
+
+	    // Add to object
+	    obj[key] = value;
+	  }
+
+	  return obj
+	}
+
+	function _parseVault (options) {
+	  options = options || {};
+
+	  const vaultPath = _vaultPath(options);
+	  options.path = vaultPath; // parse .env.vault
+	  const result = DotenvModule.configDotenv(options);
+	  if (!result.parsed) {
+	    const err = new Error(`MISSING_DATA: Cannot parse ${vaultPath} for an unknown reason`);
+	    err.code = 'MISSING_DATA';
+	    throw err
+	  }
+
+	  // handle scenario for comma separated keys - for use with key rotation
+	  // example: DOTENV_KEY="dotenv://:key_1234@dotenvx.com/vault/.env.vault?environment=prod,dotenv://:key_7890@dotenvx.com/vault/.env.vault?environment=prod"
+	  const keys = _dotenvKey(options).split(',');
+	  const length = keys.length;
+
+	  let decrypted;
+	  for (let i = 0; i < length; i++) {
+	    try {
+	      // Get full key
+	      const key = keys[i].trim();
+
+	      // Get instructions for decrypt
+	      const attrs = _instructions(result, key);
+
+	      // Decrypt
+	      decrypted = DotenvModule.decrypt(attrs.ciphertext, attrs.key);
+
+	      break
+	    } catch (error) {
+	      // last key
+	      if (i + 1 >= length) {
+	        throw error
+	      }
+	      // try next key
+	    }
+	  }
+
+	  // Parse decrypted .env string
+	  return DotenvModule.parse(decrypted)
+	}
+
+	function _warn (message) {
+	  console.error(`[dotenv@${version}][WARN] ${message}`);
+	}
+
+	function _debug (message) {
+	  console.log(`[dotenv@${version}][DEBUG] ${message}`);
+	}
+
+	function _log (message) {
+	  console.log(`[dotenv@${version}] ${message}`);
+	}
+
+	function _dotenvKey (options) {
+	  // prioritize developer directly setting options.DOTENV_KEY
+	  if (options && options.DOTENV_KEY && options.DOTENV_KEY.length > 0) {
+	    return options.DOTENV_KEY
+	  }
+
+	  // secondary infra already contains a DOTENV_KEY environment variable
+	  if (process.env.DOTENV_KEY && process.env.DOTENV_KEY.length > 0) {
+	    return process.env.DOTENV_KEY
+	  }
+
+	  // fallback to empty string
+	  return ''
+	}
+
+	function _instructions (result, dotenvKey) {
+	  // Parse DOTENV_KEY. Format is a URI
+	  let uri;
+	  try {
+	    uri = new URL(dotenvKey);
+	  } catch (error) {
+	    if (error.code === 'ERR_INVALID_URL') {
+	      const err = new Error('INVALID_DOTENV_KEY: Wrong format. Must be in valid uri format like dotenv://:key_1234@dotenvx.com/vault/.env.vault?environment=development');
+	      err.code = 'INVALID_DOTENV_KEY';
+	      throw err
+	    }
+
+	    throw error
+	  }
+
+	  // Get decrypt key
+	  const key = uri.password;
+	  if (!key) {
+	    const err = new Error('INVALID_DOTENV_KEY: Missing key part');
+	    err.code = 'INVALID_DOTENV_KEY';
+	    throw err
+	  }
+
+	  // Get environment
+	  const environment = uri.searchParams.get('environment');
+	  if (!environment) {
+	    const err = new Error('INVALID_DOTENV_KEY: Missing environment part');
+	    err.code = 'INVALID_DOTENV_KEY';
+	    throw err
+	  }
+
+	  // Get ciphertext payload
+	  const environmentKey = `DOTENV_VAULT_${environment.toUpperCase()}`;
+	  const ciphertext = result.parsed[environmentKey]; // DOTENV_VAULT_PRODUCTION
+	  if (!ciphertext) {
+	    const err = new Error(`NOT_FOUND_DOTENV_ENVIRONMENT: Cannot locate environment ${environmentKey} in your .env.vault file.`);
+	    err.code = 'NOT_FOUND_DOTENV_ENVIRONMENT';
+	    throw err
+	  }
+
+	  return { ciphertext, key }
+	}
+
+	function _vaultPath (options) {
+	  let possibleVaultPath = null;
+
+	  if (options && options.path && options.path.length > 0) {
+	    if (Array.isArray(options.path)) {
+	      for (const filepath of options.path) {
+	        if (fs.existsSync(filepath)) {
+	          possibleVaultPath = filepath.endsWith('.vault') ? filepath : `${filepath}.vault`;
+	        }
+	      }
+	    } else {
+	      possibleVaultPath = options.path.endsWith('.vault') ? options.path : `${options.path}.vault`;
+	    }
+	  } else {
+	    possibleVaultPath = path.resolve(process.cwd(), '.env.vault');
+	  }
+
+	  if (fs.existsSync(possibleVaultPath)) {
+	    return possibleVaultPath
+	  }
+
+	  return null
+	}
+
+	function _resolveHome (envPath) {
+	  return envPath[0] === '~' ? path.join(os.homedir(), envPath.slice(1)) : envPath
+	}
+
+	function _configVault (options) {
+	  const debug = parseBoolean(process.env.DOTENV_CONFIG_DEBUG || (options && options.debug));
+	  const quiet = parseBoolean(process.env.DOTENV_CONFIG_QUIET || (options && options.quiet));
+
+	  if (debug || !quiet) {
+	    _log('Loading env from encrypted .env.vault');
+	  }
+
+	  const parsed = DotenvModule._parseVault(options);
+
+	  let processEnv = process.env;
+	  if (options && options.processEnv != null) {
+	    processEnv = options.processEnv;
+	  }
+
+	  DotenvModule.populate(processEnv, parsed, options);
+
+	  return { parsed }
+	}
+
+	function configDotenv (options) {
+	  const dotenvPath = path.resolve(process.cwd(), '.env');
+	  let encoding = 'utf8';
+	  let processEnv = process.env;
+	  if (options && options.processEnv != null) {
+	    processEnv = options.processEnv;
+	  }
+	  let debug = parseBoolean(processEnv.DOTENV_CONFIG_DEBUG || (options && options.debug));
+	  let quiet = parseBoolean(processEnv.DOTENV_CONFIG_QUIET || (options && options.quiet));
+
+	  if (options && options.encoding) {
+	    encoding = options.encoding;
+	  } else {
+	    if (debug) {
+	      _debug('No encoding is specified. UTF-8 is used by default');
+	    }
+	  }
+
+	  let optionPaths = [dotenvPath]; // default, look for .env
+	  if (options && options.path) {
+	    if (!Array.isArray(options.path)) {
+	      optionPaths = [_resolveHome(options.path)];
+	    } else {
+	      optionPaths = []; // reset default
+	      for (const filepath of options.path) {
+	        optionPaths.push(_resolveHome(filepath));
+	      }
+	    }
+	  }
+
+	  // Build the parsed data in a temporary object (because we need to return it).  Once we have the final
+	  // parsed data, we will combine it with process.env (or options.processEnv if provided).
+	  let lastError;
+	  const parsedAll = {};
+	  for (const path of optionPaths) {
+	    try {
+	      // Specifying an encoding returns a string instead of a buffer
+	      const parsed = DotenvModule.parse(fs.readFileSync(path, { encoding }));
+
+	      DotenvModule.populate(parsedAll, parsed, options);
+	    } catch (e) {
+	      if (debug) {
+	        _debug(`Failed to load ${path} ${e.message}`);
+	      }
+	      lastError = e;
+	    }
+	  }
+
+	  const populated = DotenvModule.populate(processEnv, parsedAll, options);
+
+	  // handle user settings DOTENV_CONFIG_ options inside .env file(s)
+	  debug = parseBoolean(processEnv.DOTENV_CONFIG_DEBUG || debug);
+	  quiet = parseBoolean(processEnv.DOTENV_CONFIG_QUIET || quiet);
+
+	  if (debug || !quiet) {
+	    const keysCount = Object.keys(populated).length;
+	    const shortPaths = [];
+	    for (const filePath of optionPaths) {
+	      try {
+	        const relative = path.relative(process.cwd(), filePath);
+	        shortPaths.push(relative);
+	      } catch (e) {
+	        if (debug) {
+	          _debug(`Failed to load ${filePath} ${e.message}`);
+	        }
+	        lastError = e;
+	      }
+	    }
+
+	    _log(`injecting env (${keysCount}) from ${shortPaths.join(',')} ${dim(`-- tip: ${_getRandomTip()}`)}`);
+	  }
+
+	  if (lastError) {
+	    return { parsed: parsedAll, error: lastError }
+	  } else {
+	    return { parsed: parsedAll }
+	  }
+	}
+
+	// Populates process.env from .env file
+	function config (options) {
+	  // fallback to original dotenv if DOTENV_KEY is not set
+	  if (_dotenvKey(options).length === 0) {
+	    return DotenvModule.configDotenv(options)
+	  }
+
+	  const vaultPath = _vaultPath(options);
+
+	  // dotenvKey exists but .env.vault file does not exist
+	  if (!vaultPath) {
+	    _warn(`You set DOTENV_KEY but you are missing a .env.vault file at ${vaultPath}. Did you forget to build it?`);
+
+	    return DotenvModule.configDotenv(options)
+	  }
+
+	  return DotenvModule._configVault(options)
+	}
+
+	function decrypt (encrypted, keyStr) {
+	  const key = Buffer.from(keyStr.slice(-64), 'hex');
+	  let ciphertext = Buffer.from(encrypted, 'base64');
+
+	  const nonce = ciphertext.subarray(0, 12);
+	  const authTag = ciphertext.subarray(-16);
+	  ciphertext = ciphertext.subarray(12, -16);
+
+	  try {
+	    const aesgcm = crypto.createDecipheriv('aes-256-gcm', key, nonce);
+	    aesgcm.setAuthTag(authTag);
+	    return `${aesgcm.update(ciphertext)}${aesgcm.final()}`
+	  } catch (error) {
+	    const isRange = error instanceof RangeError;
+	    const invalidKeyLength = error.message === 'Invalid key length';
+	    const decryptionFailed = error.message === 'Unsupported state or unable to authenticate data';
+
+	    if (isRange || invalidKeyLength) {
+	      const err = new Error('INVALID_DOTENV_KEY: It must be 64 characters long (or more)');
+	      err.code = 'INVALID_DOTENV_KEY';
+	      throw err
+	    } else if (decryptionFailed) {
+	      const err = new Error('DECRYPTION_FAILED: Please check your DOTENV_KEY');
+	      err.code = 'DECRYPTION_FAILED';
+	      throw err
+	    } else {
+	      throw error
+	    }
+	  }
+	}
+
+	// Populate process.env with parsed values
+	function populate (processEnv, parsed, options = {}) {
+	  const debug = Boolean(options && options.debug);
+	  const override = Boolean(options && options.override);
+	  const populated = {};
+
+	  if (typeof parsed !== 'object') {
+	    const err = new Error('OBJECT_REQUIRED: Please check the processEnv argument being passed to populate');
+	    err.code = 'OBJECT_REQUIRED';
+	    throw err
+	  }
+
+	  // Set process.env
+	  for (const key of Object.keys(parsed)) {
+	    if (Object.prototype.hasOwnProperty.call(processEnv, key)) {
+	      if (override === true) {
+	        processEnv[key] = parsed[key];
+	        populated[key] = parsed[key];
+	      }
+
+	      if (debug) {
+	        if (override === true) {
+	          _debug(`"${key}" is already defined and WAS overwritten`);
+	        } else {
+	          _debug(`"${key}" is already defined and was NOT overwritten`);
+	        }
+	      }
+	    } else {
+	      processEnv[key] = parsed[key];
+	      populated[key] = parsed[key];
+	    }
+	  }
+
+	  return populated
+	}
+
+	const DotenvModule = {
+	  configDotenv,
+	  _configVault,
+	  _parseVault,
+	  config,
+	  decrypt,
+	  parse,
+	  populate
+	};
+
+	main$2.exports.configDotenv = DotenvModule.configDotenv;
+	main$2.exports._configVault = DotenvModule._configVault;
+	main$2.exports._parseVault = DotenvModule._parseVault;
+	main$2.exports.config = DotenvModule.config;
+	main$2.exports.decrypt = DotenvModule.decrypt;
+	main$2.exports.parse = DotenvModule.parse;
+	main$2.exports.populate = DotenvModule.populate;
+
+	main$2.exports = DotenvModule;
+	return main$2.exports;
+}
+
+var mainExports = requireMain$1();
+var dotenv = /*@__PURE__*/getDefaultExportFromCjs(mainExports);
 
 var core = {};
 
@@ -230,8 +677,8 @@ function requireFileCommand () {
 	fileCommand.prepareKeyValueMessage = fileCommand.issueFileCommand = void 0;
 	// We use any as a valid input type
 	/* eslint-disable @typescript-eslint/no-explicit-any */
-	const crypto = __importStar(require$$0$1);
-	const fs = __importStar(require$$1);
+	const crypto = __importStar(require$$3);
+	const fs = __importStar(require$$1$1);
 	const os = __importStar(require$$0);
 	const utils_1 = requireUtils$1();
 	function issueFileCommand(command, message) {
@@ -381,11 +828,11 @@ var hasRequiredTunnel$1;
 function requireTunnel$1 () {
 	if (hasRequiredTunnel$1) return tunnel$1;
 	hasRequiredTunnel$1 = 1;
-	var tls = require$$1$1;
+	var tls = require$$1$2;
 	var http = require$$2;
-	var https = require$$3;
+	var https = require$$3$1;
 	var events = require$$4$1;
-	var util = require$$0$2;
+	var util = require$$0$1;
 
 
 	tunnel$1.httpOverHttp = httpOverHttp;
@@ -1099,14 +1546,14 @@ function requireUtil$6 () {
 	if (hasRequiredUtil$6) return util$6;
 	hasRequiredUtil$6 = 1;
 
-	const assert = require$$0$3;
+	const assert = require$$0$2;
 	const { kDestroyed, kBodyUsed } = requireSymbols$4();
 	const { IncomingMessage } = require$$2;
-	const stream = require$$0$5;
-	const net = require$$0$4;
+	const stream = require$$0$4;
+	const net = require$$0$3;
 	const { InvalidArgumentError } = requireErrors();
 	const { Blob } = require$$7;
-	const nodeUtil = require$$0$2;
+	const nodeUtil = require$$0$1;
 	const { stringify } = require$$8;
 	const { headerNameLowerCasedRecord } = requireConstants$4();
 
@@ -1762,8 +2209,8 @@ function requireSbmh () {
 	 * Based heavily on the Streaming Boyer-Moore-Horspool C++ implementation
 	 * by Hongli Lai at: https://github.com/FooBarWidget/boyer-moore-horspool
 	 */
-	const EventEmitter = require$$0$6.EventEmitter;
-	const inherits = require$$1$2.inherits;
+	const EventEmitter = require$$0$5.EventEmitter;
+	const inherits = require$$1$3.inherits;
 
 	function SBMH (needle) {
 	  if (typeof needle === 'string') {
@@ -1972,8 +2419,8 @@ function requirePartStream () {
 	if (hasRequiredPartStream) return PartStream_1;
 	hasRequiredPartStream = 1;
 
-	const inherits = require$$1$2.inherits;
-	const ReadableStream = require$$0$7.Readable;
+	const inherits = require$$1$3.inherits;
+	const ReadableStream = require$$0$6.Readable;
 
 	function PartStream (opts) {
 	  ReadableStream.call(this, opts);
@@ -2017,8 +2464,8 @@ function requireHeaderParser () {
 	if (hasRequiredHeaderParser) return HeaderParser_1;
 	hasRequiredHeaderParser = 1;
 
-	const EventEmitter = require$$0$6.EventEmitter;
-	const inherits = require$$1$2.inherits;
+	const EventEmitter = require$$0$5.EventEmitter;
+	const inherits = require$$1$3.inherits;
 	const getLimit = requireGetLimit();
 
 	const StreamSearch = requireSbmh();
@@ -2125,8 +2572,8 @@ function requireDicer () {
 	if (hasRequiredDicer) return Dicer_1;
 	hasRequiredDicer = 1;
 
-	const WritableStream = require$$0$7.Writable;
-	const inherits = require$$1$2.inherits;
+	const WritableStream = require$$0$6.Writable;
+	const inherits = require$$1$3.inherits;
 
 	const StreamSearch = requireSbmh();
 
@@ -2702,8 +3149,8 @@ function requireMultipart () {
 	//  * support limits.fieldNameSize
 	//     -- this will require modifications to utils.parseParams
 
-	const { Readable } = require$$0$7;
-	const { inherits } = require$$1$2;
+	const { Readable } = require$$0$6;
+	const { inherits } = require$$1$3;
 
 	const Dicer = requireDicer();
 
@@ -3262,14 +3709,14 @@ function requireUrlencoded () {
 	return urlencoded;
 }
 
-var hasRequiredMain$1;
+var hasRequiredMain;
 
-function requireMain$1 () {
-	if (hasRequiredMain$1) return main$1.exports;
-	hasRequiredMain$1 = 1;
+function requireMain () {
+	if (hasRequiredMain) return main$1.exports;
+	hasRequiredMain = 1;
 
-	const WritableStream = require$$0$7.Writable;
-	const { inherits } = require$$1$2;
+	const WritableStream = require$$0$6.Writable;
+	const { inherits } = require$$1$3;
 	const Dicer = requireDicer();
 
 	const MultipartParser = requireMultipart();
@@ -3361,7 +3808,7 @@ function requireConstants$3 () {
 	if (hasRequiredConstants$3) return constants$3;
 	hasRequiredConstants$3 = 1;
 
-	const { MessageChannel, receiveMessageOnPort } = require$$0$8;
+	const { MessageChannel, receiveMessageOnPort } = require$$0$7;
 
 	const corsSafeListedMethods = ['GET', 'HEAD', 'POST'];
 	const corsSafeListedMethodsSet = new Set(corsSafeListedMethods);
@@ -3572,7 +4019,7 @@ function requireUtil$5 () {
 	const { getGlobalOrigin } = requireGlobal$1();
 	const { performance } = require$$2$1;
 	const { isBlobLike, toUSVString, ReadableStreamFrom } = requireUtil$6();
-	const assert = require$$0$3;
+	const assert = require$$0$2;
 	const { isUint8Array } = require$$5;
 
 	let supportedHashes = [];
@@ -4737,7 +5184,7 @@ function requireWebidl () {
 	if (hasRequiredWebidl) return webidl_1;
 	hasRequiredWebidl = 1;
 
-	const { types } = require$$0$2;
+	const { types } = require$$0$1;
 	const { hasOwn, toUSVString } = requireUtil$5();
 
 	/** @type {import('../../types/webidl').Webidl} */
@@ -5390,7 +5837,7 @@ var hasRequiredDataURL;
 function requireDataURL () {
 	if (hasRequiredDataURL) return dataURL;
 	hasRequiredDataURL = 1;
-	const assert = require$$0$3;
+	const assert = require$$0$2;
 	const { atob } = require$$7;
 	const { isomorphicDecode } = requireUtil$5();
 
@@ -6028,7 +6475,7 @@ function requireFile () {
 	hasRequiredFile = 1;
 
 	const { Blob, File: NativeFile } = require$$7;
-	const { types } = require$$0$2;
+	const { types } = require$$0$1;
 	const { kState } = requireSymbols$3();
 	const { isBlobLike } = requireUtil$5();
 	const { webidl } = requireWebidl();
@@ -6652,7 +7099,7 @@ function requireBody () {
 	if (hasRequiredBody) return body;
 	hasRequiredBody = 1;
 
-	const Busboy = requireMain$1();
+	const Busboy = requireMain();
 	const util = requireUtil$6();
 	const {
 	  ReadableStreamFrom,
@@ -6668,7 +7115,7 @@ function requireBody () {
 	const { DOMException, structuredClone } = requireConstants$3();
 	const { Blob, File: NativeFile } = require$$7;
 	const { kBodyUsed } = requireSymbols$4();
-	const assert = require$$0$3;
+	const assert = require$$0$2;
 	const { isErrored } = requireUtil$6();
 	const { isUint8Array, isArrayBuffer } = require$$5;
 	const { File: UndiciFile } = requireFile();
@@ -7277,7 +7724,7 @@ function requireRequest$1 () {
 	  InvalidArgumentError,
 	  NotSupportedError
 	} = requireErrors();
-	const assert = require$$0$3;
+	const assert = require$$0$2;
 	const { kHTTP2BuildRequest, kHTTP2CopyHeaders, kHTTP1BuildRequest } = requireSymbols$4();
 	const util = requireUtil$6();
 
@@ -8007,8 +8454,8 @@ function requireConnect () {
 	if (hasRequiredConnect) return connect;
 	hasRequiredConnect = 1;
 
-	const net = require$$0$4;
-	const assert = require$$0$3;
+	const net = require$$0$3;
+	const assert = require$$0$2;
 	const util = requireUtil$6();
 	const { InvalidArgumentError, ConnectTimeoutError } = requireErrors();
 
@@ -8093,7 +8540,7 @@ function requireConnect () {
 	    let socket;
 	    if (protocol === 'https:') {
 	      if (!tls) {
-	        tls = require$$1$1;
+	        tls = require$$1$2;
 	      }
 	      servername = servername || options.servername || util.getServerName(host) || null;
 
@@ -8513,7 +8960,7 @@ function requireRedirectHandler () {
 
 	const util = requireUtil$6();
 	const { kBodyUsed } = requireSymbols$4();
-	const assert = require$$0$3;
+	const assert = require$$0$2;
 	const { InvalidArgumentError } = requireErrors();
 	const EE = require$$4$1;
 
@@ -8773,10 +9220,10 @@ function requireClient () {
 
 	/* global WebAssembly */
 
-	const assert = require$$0$3;
-	const net = require$$0$4;
+	const assert = require$$0$2;
+	const net = require$$0$3;
 	const http = require$$2;
-	const { pipeline } = require$$0$5;
+	const { pipeline } = require$$0$4;
 	const util = requireUtil$6();
 	const timers = requireTimers();
 	const Request = requireRequest$1();
@@ -11958,8 +12405,8 @@ function requireReadable () {
 	if (hasRequiredReadable) return readable;
 	hasRequiredReadable = 1;
 
-	const assert = require$$0$3;
-	const { Readable } = require$$0$5;
+	const assert = require$$0$2;
+	const { Readable } = require$$0$4;
 	const { RequestAbortedError, NotSupportedError, InvalidArgumentError } = requireErrors();
 	const util = requireUtil$6();
 	const { ReadableStreamFrom, toUSVString } = requireUtil$6();
@@ -12285,7 +12732,7 @@ var hasRequiredUtil$4;
 function requireUtil$4 () {
 	if (hasRequiredUtil$4) return util$4;
 	hasRequiredUtil$4 = 1;
-	const assert = require$$0$3;
+	const assert = require$$0$2;
 	const {
 	  ResponseStatusCodeError
 	} = requireErrors();
@@ -12591,7 +13038,7 @@ function requireApiStream () {
 	if (hasRequiredApiStream) return apiStream;
 	hasRequiredApiStream = 1;
 
-	const { finished, PassThrough } = require$$0$5;
+	const { finished, PassThrough } = require$$0$4;
 	const {
 	  InvalidArgumentError,
 	  InvalidReturnValueError,
@@ -12823,7 +13270,7 @@ function requireApiPipeline () {
 	  Readable,
 	  Duplex,
 	  PassThrough
-	} = require$$0$5;
+	} = require$$0$4;
 	const {
 	  InvalidArgumentError,
 	  InvalidReturnValueError,
@@ -12832,7 +13279,7 @@ function requireApiPipeline () {
 	const util = requireUtil$6();
 	const { AsyncResource } = require$$4$2;
 	const { addSignal, removeSignal } = requireAbortSignal();
-	const assert = require$$0$3;
+	const assert = require$$0$2;
 
 	const kResume = Symbol('resume');
 
@@ -13080,7 +13527,7 @@ function requireApiUpgrade () {
 	const { AsyncResource } = require$$4$2;
 	const util = requireUtil$6();
 	const { addSignal, removeSignal } = requireAbortSignal();
-	const assert = require$$0$3;
+	const assert = require$$0$2;
 
 	class UpgradeHandler extends AsyncResource {
 	  constructor (opts, callback) {
@@ -13385,7 +13832,7 @@ function requireMockUtils () {
 	  types: {
 	    isPromise
 	  }
-	} = require$$0$2;
+	} = require$$0$1;
 
 	function matchValue (match, value) {
 	  if (typeof match === 'string') {
@@ -13945,7 +14392,7 @@ function requireMockClient () {
 	if (hasRequiredMockClient) return mockClient;
 	hasRequiredMockClient = 1;
 
-	const { promisify } = require$$0$2;
+	const { promisify } = require$$0$1;
 	const Client = requireClient();
 	const { buildMockDispatch } = requireMockUtils();
 	const {
@@ -14012,7 +14459,7 @@ function requireMockPool () {
 	if (hasRequiredMockPool) return mockPool;
 	hasRequiredMockPool = 1;
 
-	const { promisify } = require$$0$2;
+	const { promisify } = require$$0$1;
 	const Pool = requirePool();
 	const { buildMockDispatch } = requireMockUtils();
 	const {
@@ -14116,8 +14563,8 @@ function requirePendingInterceptorsFormatter () {
 	if (hasRequiredPendingInterceptorsFormatter) return pendingInterceptorsFormatter;
 	hasRequiredPendingInterceptorsFormatter = 1;
 
-	const { Transform } = require$$0$5;
-	const { Console } = require$$1$3;
+	const { Transform } = require$$0$4;
+	const { Console } = require$$1$4;
 
 	/**
 	 * Gets the output of `console.table(…)` as a string.
@@ -14344,7 +14791,7 @@ function requireProxyAgent () {
 	hasRequiredProxyAgent = 1;
 
 	const { kProxy, kClose, kDestroy, kInterceptors } = requireSymbols$4();
-	const { URL } = require$$1$4;
+	const { URL } = require$$1$5;
 	const Agent = requireAgent();
 	const Pool = requirePool();
 	const DispatcherBase = requireDispatcherBase();
@@ -14539,7 +14986,7 @@ var hasRequiredRetryHandler;
 function requireRetryHandler () {
 	if (hasRequiredRetryHandler) return RetryHandler_1;
 	hasRequiredRetryHandler = 1;
-	const assert = require$$0$3;
+	const assert = require$$0$2;
 
 	const { kRetryHandlerDefaultRetry } = requireSymbols$4();
 	const { RequestRetryError } = requireErrors();
@@ -14976,9 +15423,9 @@ function requireHeaders () {
 	  isValidHeaderName,
 	  isValidHeaderValue
 	} = requireUtil$5();
-	const util = require$$0$2;
+	const util = require$$0$1;
 	const { webidl } = requireWebidl();
-	const assert = require$$0$3;
+	const assert = require$$0$2;
 
 	const kHeadersMap = Symbol('headers map');
 	const kHeadersSortedMap = Symbol('headers map sorted');
@@ -15584,8 +16031,8 @@ function requireResponse () {
 	const { getGlobalOrigin } = requireGlobal$1();
 	const { URLSerializer } = requireDataURL();
 	const { kHeadersList, kConstruct } = requireSymbols$4();
-	const assert = require$$0$3;
-	const { types } = require$$0$2;
+	const assert = require$$0$2;
+	const { types } = require$$0$1;
 
 	const ReadableStream = globalThis.ReadableStream || require$$14.ReadableStream;
 	const textEncoder = new TextEncoder('utf-8');
@@ -16168,7 +16615,7 @@ function requireRequest () {
 	const { getGlobalOrigin } = requireGlobal$1();
 	const { URLSerializer } = requireDataURL();
 	const { kHeadersList, kConstruct } = requireSymbols$4();
-	const assert = require$$0$3;
+	const assert = require$$0$2;
 	const { getMaxListeners, setMaxListeners, getEventListeners, defaultMaxListeners } = require$$4$1;
 
 	let TransformStream = globalThis.TransformStream;
@@ -17102,7 +17549,7 @@ function requireFetch () {
 	} = requireResponse();
 	const { Headers } = requireHeaders();
 	const { Request, makeRequest } = requireRequest();
-	const zlib = require$$3$1;
+	const zlib = require$$3$2;
 	const {
 	  bytesMatch,
 	  makePolicyContainer,
@@ -17134,7 +17581,7 @@ function requireFetch () {
 	  urlHasHttpsScheme
 	} = requireUtil$5();
 	const { kState, kHeaders, kGuard, kRealm } = requireSymbols$3();
-	const assert = require$$0$3;
+	const assert = require$$0$2;
 	const { safelyExtractBody } = requireBody();
 	const {
 	  redirectStatusSet,
@@ -17146,7 +17593,7 @@ function requireFetch () {
 	} = requireConstants$3();
 	const { kHeadersList } = requireSymbols$4();
 	const EE = require$$4$1;
-	const { Readable, pipeline } = require$$0$5;
+	const { Readable, pipeline } = require$$0$4;
 	const { addAbortListener, isErrored, isReadable, nodeMajor, nodeMinor } = requireUtil$6();
 	const { dataURLProcessor, serializeAMimeType } = requireDataURL();
 	const { TransformStream } = require$$14;
@@ -19586,7 +20033,7 @@ function requireUtil$3 () {
 	const { getEncoding } = requireEncoding();
 	const { DOMException } = requireConstants$3();
 	const { serializeAMimeType, parseMIMEType } = requireDataURL();
-	const { types } = require$$0$2;
+	const { types } = require$$0$1;
 	const { StringDecoder } = require$$6;
 	const { btoa } = require$$7;
 
@@ -20340,7 +20787,7 @@ function requireUtil$2 () {
 	if (hasRequiredUtil$2) return util$2;
 	hasRequiredUtil$2 = 1;
 
-	const assert = require$$0$3;
+	const assert = require$$0$2;
 	const { URLSerializer } = requireDataURL();
 	const { isValidHeaderName } = requireUtil$5();
 
@@ -20407,7 +20854,7 @@ function requireCache () {
 	const { kState, kHeaders, kGuard, kRealm } = requireSymbols$3();
 	const { fetching } = requireFetch();
 	const { urlIsHttpHttpsScheme, createDeferredPromise, readAllBytes } = requireUtil$5();
-	const assert = require$$0$3;
+	const assert = require$$0$2;
 	const { getGlobalDispatcher } = requireGlobal();
 
 	/**
@@ -21700,7 +22147,7 @@ function requireParse () {
 	const { maxNameValuePairSize, maxAttributeValueSize } = requireConstants$1();
 	const { isCTLExcludingHtab } = requireUtil$1();
 	const { collectASequenceOfCodePointsFast } = requireDataURL();
-	const assert = require$$0$3;
+	const assert = require$$0$2;
 
 	/**
 	 * @description Parses the field-value attributes of a set-cookie header string.
@@ -22294,7 +22741,7 @@ function requireEvents () {
 
 	const { webidl } = requireWebidl();
 	const { kEnumerableProperty } = requireUtil$6();
-	const { MessagePort } = require$$0$8;
+	const { MessagePort } = require$$0$7;
 
 	/**
 	 * @see https://html.spec.whatwg.org/multipage/comms.html#messageevent
@@ -22811,7 +23258,7 @@ function requireConnection () {
 	if (hasRequiredConnection) return connection;
 	hasRequiredConnection = 1;
 
-	const diagnosticsChannel = require$$0$9;
+	const diagnosticsChannel = require$$0$8;
 	const { uid, states } = requireConstants();
 	const {
 	  kReadyState,
@@ -23191,8 +23638,8 @@ function requireReceiver () {
 	if (hasRequiredReceiver) return receiver;
 	hasRequiredReceiver = 1;
 
-	const { Writable } = require$$0$5;
-	const diagnosticsChannel = require$$0$9;
+	const { Writable } = require$$0$4;
+	const diagnosticsChannel = require$$0$8;
 	const { parserStates, opcodes, states, emptyBuffer } = requireConstants();
 	const { kReadyState, kSentClose, kResponse, kReceivedClose } = requireSymbols();
 	const { isValidStatusCode, failWebsocketConnection, websocketMessageReceived } = requireUtil();
@@ -23563,7 +24010,7 @@ function requireWebsocket () {
 	const { ByteParser } = requireReceiver();
 	const { kEnumerableProperty, isBlobLike } = requireUtil$6();
 	const { getGlobalDispatcher } = requireGlobal();
-	const { types } = require$$0$2;
+	const { types } = require$$0$1;
 
 	let experimentalWarned = false;
 
@@ -24397,7 +24844,7 @@ function requireLib () {
 	Object.defineProperty(lib, "__esModule", { value: true });
 	lib.HttpClient = lib.isHttps = lib.HttpClientResponse = lib.HttpClientError = lib.getProxyUrl = lib.MediaTypes = lib.Headers = lib.HttpCodes = void 0;
 	const http = __importStar(require$$2);
-	const https = __importStar(require$$3);
+	const https = __importStar(require$$3$1);
 	const pm = __importStar(requireProxy());
 	const tunnel = __importStar(requireTunnel());
 	const undici_1 = requireUndici();
@@ -25209,7 +25656,7 @@ function requireSummary () {
 		Object.defineProperty(exports, "__esModule", { value: true });
 		exports.summary = exports.markdownSummary = exports.SUMMARY_DOCS_URL = exports.SUMMARY_ENV_VAR = void 0;
 		const os_1 = require$$0;
-		const fs_1 = require$$1;
+		const fs_1 = require$$1$1;
 		const { access, appendFile, writeFile } = fs_1.promises;
 		exports.SUMMARY_ENV_VAR = 'GITHUB_STEP_SUMMARY';
 		exports.SUMMARY_DOCS_URL = 'https://docs.github.com/actions/using-workflows/workflow-commands-for-github-actions#adding-a-job-summary';
@@ -25515,7 +25962,7 @@ function requirePathUtils () {
 	};
 	Object.defineProperty(pathUtils, "__esModule", { value: true });
 	pathUtils.toPlatformPath = pathUtils.toWin32Path = pathUtils.toPosixPath = void 0;
-	const path = __importStar(require$$1$5);
+	const path = __importStar(require$$1);
 	/**
 	 * toPosixPath converts the given path to the posix form. On Windows, \\ will be
 	 * replaced with /.
@@ -25601,8 +26048,8 @@ function requireIoUtil () {
 		var _a;
 		Object.defineProperty(exports, "__esModule", { value: true });
 		exports.getCmdPath = exports.tryGetExecutablePath = exports.isRooted = exports.isDirectory = exports.exists = exports.READONLY = exports.UV_FS_O_EXLOCK = exports.IS_WINDOWS = exports.unlink = exports.symlink = exports.stat = exports.rmdir = exports.rm = exports.rename = exports.readlink = exports.readdir = exports.open = exports.mkdir = exports.lstat = exports.copyFile = exports.chmod = void 0;
-		const fs = __importStar(require$$1);
-		const path = __importStar(require$$1$5);
+		const fs = __importStar(require$$1$1);
+		const path = __importStar(require$$1);
 		_a = fs.promises
 		// export const {open} = 'fs'
 		, exports.chmod = _a.chmod, exports.copyFile = _a.copyFile, exports.lstat = _a.lstat, exports.mkdir = _a.mkdir, exports.open = _a.open, exports.readdir = _a.readdir, exports.readlink = _a.readlink, exports.rename = _a.rename, exports.rm = _a.rm, exports.rmdir = _a.rmdir, exports.stat = _a.stat, exports.symlink = _a.symlink, exports.unlink = _a.unlink;
@@ -25791,8 +26238,8 @@ function requireIo () {
 	};
 	Object.defineProperty(io, "__esModule", { value: true });
 	io.findInPath = io.which = io.mkdirP = io.rmRF = io.mv = io.cp = void 0;
-	const assert_1 = require$$0$3;
-	const path = __importStar(require$$1$5);
+	const assert_1 = require$$0$2;
+	const path = __importStar(require$$1);
 	const ioUtil = __importStar(requireIoUtil());
 	/**
 	 * Copies a file or folder.
@@ -26100,7 +26547,7 @@ function requireToolrunner () {
 	const os = __importStar(require$$0);
 	const events = __importStar(require$$4$1);
 	const child = __importStar(require$$2$2);
-	const path = __importStar(require$$1$5);
+	const path = __importStar(require$$1);
 	const io = __importStar(requireIo());
 	const ioUtil = __importStar(requireIoUtil());
 	const timers_1 = require$$6$1;
@@ -26944,7 +27391,7 @@ function requireCore () {
 		const file_command_1 = requireFileCommand();
 		const utils_1 = requireUtils$1();
 		const os = __importStar(require$$0);
-		const path = __importStar(require$$1$5);
+		const path = __importStar(require$$1);
 		const oidc_utils_1 = requireOidcUtils();
 		/**
 		 * The code to exit an action
@@ -27253,643 +27700,168 @@ function requireCore () {
 	return core;
 }
 
-var main = {exports: {}};
+var coreExports = requireCore();
+
+async function main() {
+    coreExports.info('🏳️ Starting Environment to/from JSON Action');
+
+    // Inputs
+    const inputs = {
+        sourceData: coreExports.getInput('source-data') || coreExports.getInput('source'),
+        sourceType: coreExports.getInput('source-type') || coreExports.getInput('type'),
+        outputType: coreExports.getInput('output-type') || coreExports.getInput('output'),
+        outputFile: coreExports.getInput('output-file') || coreExports.getInput('dest'),
+        sensitive: coreExports.getBooleanInput('sensitive'),
+        summary: coreExports.getBooleanInput('summary'),
+    };
+    coreExports.startGroup('Inputs');
+    console.log(inputs);
+    coreExports.endGroup(); // Inputs
+
+    // Verify Inputs
+    if (!inputs.sourceData) return coreExports.setFailed(`Missing Input: source`)
+    if (!['json', 'env'].includes(inputs.sourceType)) {
+        return coreExports.setFailed(`Invalid source-type: ${inputs.sourceType}`)
+    }
+    if (!inputs.outputType) {
+        inputs.outputType = inputs.sourceType === 'json' ? 'env' : 'json';
+    }
+    if (!['json', 'env'].includes(inputs.outputType)) {
+        return coreExports.setFailed(`Invalid output-type: ${inputs.outputType}`)
+    }
+
+    coreExports.info(`🔁 Converting: ${inputs.sourceType} -> ${inputs.outputType}`);
+
+    // Process Data
+    let source = {};
+    if (inputs.sourceType === 'json') {
+        coreExports.info('⌛ Processing Source: JSON');
+        if (fs.existsSync(inputs.sourceData)) {
+            coreExports.info('JSON File...');
+            source = JSON.parse(fs.readFileSync(inputs.sourceData, 'utf-8'));
+        } else {
+            coreExports.info('JSON Input...');
+            source = JSON.stringify(inputs.sourceData);
+        }
+    } else if (inputs.sourceType === 'env') {
+        coreExports.info('⌛ Processing Source: ENV');
+        if (fs.existsSync(inputs.sourceData)) {
+            coreExports.info('Environment File...');
+            source = dotenv.parse(fs.readFileSync(inputs.sourceData, 'utf-8'));
+        } else {
+            coreExports.info('Environment Input...');
+            for (let name of inputs.sourceData.split('\n')) {
+                // console.log(`name: ${name} - value: ${process.env[name]}`)
+                if (name && process.env[name]) {
+                    source[name] = process.env[name];
+                }
+            }
+        }
+    }
+    // console.log('-- SOURCE DATA --\n', source, '\n-----------------')
+
+    /** @type {string} */
+    let result;
+    if (inputs.outputType === 'json') {
+        coreExports.info('Generating Result using: JSON.stringify');
+        result = JSON.stringify(source);
+    } else {
+        coreExports.info('Generating Result using: toEnv');
+        result = toEnv(source);
+    }
+    // console.log(`---- RESULT -----\n${result}\n-----------------`)
+
+    // Set Secret
+    if (inputs.sensitive) {
+        coreExports.info('🕵️ Setting Sensitive');
+        coreExports.setSecret(result);
+        for (const value of Object.values(source)) {
+            // console.log('core.setSecret:', value)
+            coreExports.setSecret(value.toString());
+        }
+    }
+
+    // Write File
+    if (inputs.outputFile) {
+        coreExports.info(`💾 \u001b[32mWriring Results: ${inputs.outputFile}`);
+        fs.writeFileSync(inputs.outputFile, result + '\n');
+    }
+
+    // Set Outputs
+    coreExports.info('📩 Setting Outputs');
+    coreExports.setOutput('result', result);
+
+    // Summary
+    if (inputs.summary) {
+        coreExports.info('📝 Writing Job Summary');
+        try {
+            await addSummary(inputs, result);
+        } catch (e) {
+            console.log(e);
+            coreExports.error(`Error writing Job Summary ${e.message}`);
+        }
+    }
 
-var version = "17.2.3";
-var require$$4 = {
-	version: version};
-
-var hasRequiredMain;
-
-function requireMain () {
-	if (hasRequiredMain) return main.exports;
-	hasRequiredMain = 1;
-	const fs = require$$1;
-	const path = require$$1$5;
-	const os = require$$0;
-	const crypto = require$$0$1;
-	const packageJson = require$$4;
-
-	const version = packageJson.version;
-
-	// Array of tips to display randomly
-	const TIPS = [
-	  '🔐 encrypt with Dotenvx: https://dotenvx.com',
-	  '🔐 prevent committing .env to code: https://dotenvx.com/precommit',
-	  '🔐 prevent building .env in docker: https://dotenvx.com/prebuild',
-	  '📡 add observability to secrets: https://dotenvx.com/ops',
-	  '👥 sync secrets across teammates & machines: https://dotenvx.com/ops',
-	  '🗂️ backup and recover secrets: https://dotenvx.com/ops',
-	  '✅ audit secrets and track compliance: https://dotenvx.com/ops',
-	  '🔄 add secrets lifecycle management: https://dotenvx.com/ops',
-	  '🔑 add access controls to secrets: https://dotenvx.com/ops',
-	  '🛠️  run anywhere with `dotenvx run -- yourcommand`',
-	  '⚙️  specify custom .env file path with { path: \'/custom/path/.env\' }',
-	  '⚙️  enable debug logging with { debug: true }',
-	  '⚙️  override existing env vars with { override: true }',
-	  '⚙️  suppress all logs with { quiet: true }',
-	  '⚙️  write to custom object with { processEnv: myObject }',
-	  '⚙️  load multiple .env files with { path: [\'.env.local\', \'.env\'] }'
-	];
-
-	// Get a random tip from the tips array
-	function _getRandomTip () {
-	  return TIPS[Math.floor(Math.random() * TIPS.length)]
-	}
-
-	function parseBoolean (value) {
-	  if (typeof value === 'string') {
-	    return !['false', '0', 'no', 'off', ''].includes(value.toLowerCase())
-	  }
-	  return Boolean(value)
-	}
-
-	function supportsAnsi () {
-	  return process.stdout.isTTY // && process.env.TERM !== 'dumb'
-	}
-
-	function dim (text) {
-	  return supportsAnsi() ? `\x1b[2m${text}\x1b[0m` : text
-	}
-
-	const LINE = /(?:^|^)\s*(?:export\s+)?([\w.-]+)(?:\s*=\s*?|:\s+?)(\s*'(?:\\'|[^'])*'|\s*"(?:\\"|[^"])*"|\s*`(?:\\`|[^`])*`|[^#\r\n]+)?\s*(?:#.*)?(?:$|$)/mg;
-
-	// Parse src into an Object
-	function parse (src) {
-	  const obj = {};
-
-	  // Convert buffer to string
-	  let lines = src.toString();
-
-	  // Convert line breaks to same format
-	  lines = lines.replace(/\r\n?/mg, '\n');
-
-	  let match;
-	  while ((match = LINE.exec(lines)) != null) {
-	    const key = match[1];
-
-	    // Default undefined or null to empty string
-	    let value = (match[2] || '');
-
-	    // Remove whitespace
-	    value = value.trim();
-
-	    // Check if double quoted
-	    const maybeQuote = value[0];
-
-	    // Remove surrounding quotes
-	    value = value.replace(/^(['"`])([\s\S]*)\1$/mg, '$2');
-
-	    // Expand newlines if double quoted
-	    if (maybeQuote === '"') {
-	      value = value.replace(/\\n/g, '\n');
-	      value = value.replace(/\\r/g, '\r');
-	    }
-
-	    // Add to object
-	    obj[key] = value;
-	  }
-
-	  return obj
-	}
-
-	function _parseVault (options) {
-	  options = options || {};
-
-	  const vaultPath = _vaultPath(options);
-	  options.path = vaultPath; // parse .env.vault
-	  const result = DotenvModule.configDotenv(options);
-	  if (!result.parsed) {
-	    const err = new Error(`MISSING_DATA: Cannot parse ${vaultPath} for an unknown reason`);
-	    err.code = 'MISSING_DATA';
-	    throw err
-	  }
-
-	  // handle scenario for comma separated keys - for use with key rotation
-	  // example: DOTENV_KEY="dotenv://:key_1234@dotenvx.com/vault/.env.vault?environment=prod,dotenv://:key_7890@dotenvx.com/vault/.env.vault?environment=prod"
-	  const keys = _dotenvKey(options).split(',');
-	  const length = keys.length;
-
-	  let decrypted;
-	  for (let i = 0; i < length; i++) {
-	    try {
-	      // Get full key
-	      const key = keys[i].trim();
-
-	      // Get instructions for decrypt
-	      const attrs = _instructions(result, key);
-
-	      // Decrypt
-	      decrypted = DotenvModule.decrypt(attrs.ciphertext, attrs.key);
-
-	      break
-	    } catch (error) {
-	      // last key
-	      if (i + 1 >= length) {
-	        throw error
-	      }
-	      // try next key
-	    }
-	  }
-
-	  // Parse decrypted .env string
-	  return DotenvModule.parse(decrypted)
-	}
-
-	function _warn (message) {
-	  console.error(`[dotenv@${version}][WARN] ${message}`);
-	}
-
-	function _debug (message) {
-	  console.log(`[dotenv@${version}][DEBUG] ${message}`);
-	}
-
-	function _log (message) {
-	  console.log(`[dotenv@${version}] ${message}`);
-	}
-
-	function _dotenvKey (options) {
-	  // prioritize developer directly setting options.DOTENV_KEY
-	  if (options && options.DOTENV_KEY && options.DOTENV_KEY.length > 0) {
-	    return options.DOTENV_KEY
-	  }
-
-	  // secondary infra already contains a DOTENV_KEY environment variable
-	  if (process.env.DOTENV_KEY && process.env.DOTENV_KEY.length > 0) {
-	    return process.env.DOTENV_KEY
-	  }
-
-	  // fallback to empty string
-	  return ''
-	}
-
-	function _instructions (result, dotenvKey) {
-	  // Parse DOTENV_KEY. Format is a URI
-	  let uri;
-	  try {
-	    uri = new URL(dotenvKey);
-	  } catch (error) {
-	    if (error.code === 'ERR_INVALID_URL') {
-	      const err = new Error('INVALID_DOTENV_KEY: Wrong format. Must be in valid uri format like dotenv://:key_1234@dotenvx.com/vault/.env.vault?environment=development');
-	      err.code = 'INVALID_DOTENV_KEY';
-	      throw err
-	    }
-
-	    throw error
-	  }
-
-	  // Get decrypt key
-	  const key = uri.password;
-	  if (!key) {
-	    const err = new Error('INVALID_DOTENV_KEY: Missing key part');
-	    err.code = 'INVALID_DOTENV_KEY';
-	    throw err
-	  }
-
-	  // Get environment
-	  const environment = uri.searchParams.get('environment');
-	  if (!environment) {
-	    const err = new Error('INVALID_DOTENV_KEY: Missing environment part');
-	    err.code = 'INVALID_DOTENV_KEY';
-	    throw err
-	  }
-
-	  // Get ciphertext payload
-	  const environmentKey = `DOTENV_VAULT_${environment.toUpperCase()}`;
-	  const ciphertext = result.parsed[environmentKey]; // DOTENV_VAULT_PRODUCTION
-	  if (!ciphertext) {
-	    const err = new Error(`NOT_FOUND_DOTENV_ENVIRONMENT: Cannot locate environment ${environmentKey} in your .env.vault file.`);
-	    err.code = 'NOT_FOUND_DOTENV_ENVIRONMENT';
-	    throw err
-	  }
-
-	  return { ciphertext, key }
-	}
-
-	function _vaultPath (options) {
-	  let possibleVaultPath = null;
-
-	  if (options && options.path && options.path.length > 0) {
-	    if (Array.isArray(options.path)) {
-	      for (const filepath of options.path) {
-	        if (fs.existsSync(filepath)) {
-	          possibleVaultPath = filepath.endsWith('.vault') ? filepath : `${filepath}.vault`;
-	        }
-	      }
-	    } else {
-	      possibleVaultPath = options.path.endsWith('.vault') ? options.path : `${options.path}.vault`;
-	    }
-	  } else {
-	    possibleVaultPath = path.resolve(process.cwd(), '.env.vault');
-	  }
-
-	  if (fs.existsSync(possibleVaultPath)) {
-	    return possibleVaultPath
-	  }
-
-	  return null
-	}
-
-	function _resolveHome (envPath) {
-	  return envPath[0] === '~' ? path.join(os.homedir(), envPath.slice(1)) : envPath
-	}
-
-	function _configVault (options) {
-	  const debug = parseBoolean(process.env.DOTENV_CONFIG_DEBUG || (options && options.debug));
-	  const quiet = parseBoolean(process.env.DOTENV_CONFIG_QUIET || (options && options.quiet));
-
-	  if (debug || !quiet) {
-	    _log('Loading env from encrypted .env.vault');
-	  }
-
-	  const parsed = DotenvModule._parseVault(options);
-
-	  let processEnv = process.env;
-	  if (options && options.processEnv != null) {
-	    processEnv = options.processEnv;
-	  }
-
-	  DotenvModule.populate(processEnv, parsed, options);
-
-	  return { parsed }
-	}
-
-	function configDotenv (options) {
-	  const dotenvPath = path.resolve(process.cwd(), '.env');
-	  let encoding = 'utf8';
-	  let processEnv = process.env;
-	  if (options && options.processEnv != null) {
-	    processEnv = options.processEnv;
-	  }
-	  let debug = parseBoolean(processEnv.DOTENV_CONFIG_DEBUG || (options && options.debug));
-	  let quiet = parseBoolean(processEnv.DOTENV_CONFIG_QUIET || (options && options.quiet));
-
-	  if (options && options.encoding) {
-	    encoding = options.encoding;
-	  } else {
-	    if (debug) {
-	      _debug('No encoding is specified. UTF-8 is used by default');
-	    }
-	  }
-
-	  let optionPaths = [dotenvPath]; // default, look for .env
-	  if (options && options.path) {
-	    if (!Array.isArray(options.path)) {
-	      optionPaths = [_resolveHome(options.path)];
-	    } else {
-	      optionPaths = []; // reset default
-	      for (const filepath of options.path) {
-	        optionPaths.push(_resolveHome(filepath));
-	      }
-	    }
-	  }
-
-	  // Build the parsed data in a temporary object (because we need to return it).  Once we have the final
-	  // parsed data, we will combine it with process.env (or options.processEnv if provided).
-	  let lastError;
-	  const parsedAll = {};
-	  for (const path of optionPaths) {
-	    try {
-	      // Specifying an encoding returns a string instead of a buffer
-	      const parsed = DotenvModule.parse(fs.readFileSync(path, { encoding }));
-
-	      DotenvModule.populate(parsedAll, parsed, options);
-	    } catch (e) {
-	      if (debug) {
-	        _debug(`Failed to load ${path} ${e.message}`);
-	      }
-	      lastError = e;
-	    }
-	  }
-
-	  const populated = DotenvModule.populate(processEnv, parsedAll, options);
-
-	  // handle user settings DOTENV_CONFIG_ options inside .env file(s)
-	  debug = parseBoolean(processEnv.DOTENV_CONFIG_DEBUG || debug);
-	  quiet = parseBoolean(processEnv.DOTENV_CONFIG_QUIET || quiet);
-
-	  if (debug || !quiet) {
-	    const keysCount = Object.keys(populated).length;
-	    const shortPaths = [];
-	    for (const filePath of optionPaths) {
-	      try {
-	        const relative = path.relative(process.cwd(), filePath);
-	        shortPaths.push(relative);
-	      } catch (e) {
-	        if (debug) {
-	          _debug(`Failed to load ${filePath} ${e.message}`);
-	        }
-	        lastError = e;
-	      }
-	    }
-
-	    _log(`injecting env (${keysCount}) from ${shortPaths.join(',')} ${dim(`-- tip: ${_getRandomTip()}`)}`);
-	  }
-
-	  if (lastError) {
-	    return { parsed: parsedAll, error: lastError }
-	  } else {
-	    return { parsed: parsedAll }
-	  }
-	}
-
-	// Populates process.env from .env file
-	function config (options) {
-	  // fallback to original dotenv if DOTENV_KEY is not set
-	  if (_dotenvKey(options).length === 0) {
-	    return DotenvModule.configDotenv(options)
-	  }
-
-	  const vaultPath = _vaultPath(options);
-
-	  // dotenvKey exists but .env.vault file does not exist
-	  if (!vaultPath) {
-	    _warn(`You set DOTENV_KEY but you are missing a .env.vault file at ${vaultPath}. Did you forget to build it?`);
-
-	    return DotenvModule.configDotenv(options)
-	  }
-
-	  return DotenvModule._configVault(options)
-	}
-
-	function decrypt (encrypted, keyStr) {
-	  const key = Buffer.from(keyStr.slice(-64), 'hex');
-	  let ciphertext = Buffer.from(encrypted, 'base64');
-
-	  const nonce = ciphertext.subarray(0, 12);
-	  const authTag = ciphertext.subarray(-16);
-	  ciphertext = ciphertext.subarray(12, -16);
-
-	  try {
-	    const aesgcm = crypto.createDecipheriv('aes-256-gcm', key, nonce);
-	    aesgcm.setAuthTag(authTag);
-	    return `${aesgcm.update(ciphertext)}${aesgcm.final()}`
-	  } catch (error) {
-	    const isRange = error instanceof RangeError;
-	    const invalidKeyLength = error.message === 'Invalid key length';
-	    const decryptionFailed = error.message === 'Unsupported state or unable to authenticate data';
-
-	    if (isRange || invalidKeyLength) {
-	      const err = new Error('INVALID_DOTENV_KEY: It must be 64 characters long (or more)');
-	      err.code = 'INVALID_DOTENV_KEY';
-	      throw err
-	    } else if (decryptionFailed) {
-	      const err = new Error('DECRYPTION_FAILED: Please check your DOTENV_KEY');
-	      err.code = 'DECRYPTION_FAILED';
-	      throw err
-	    } else {
-	      throw error
-	    }
-	  }
-	}
-
-	// Populate process.env with parsed values
-	function populate (processEnv, parsed, options = {}) {
-	  const debug = Boolean(options && options.debug);
-	  const override = Boolean(options && options.override);
-	  const populated = {};
-
-	  if (typeof parsed !== 'object') {
-	    const err = new Error('OBJECT_REQUIRED: Please check the processEnv argument being passed to populate');
-	    err.code = 'OBJECT_REQUIRED';
-	    throw err
-	  }
-
-	  // Set process.env
-	  for (const key of Object.keys(parsed)) {
-	    if (Object.prototype.hasOwnProperty.call(processEnv, key)) {
-	      if (override === true) {
-	        processEnv[key] = parsed[key];
-	        populated[key] = parsed[key];
-	      }
-
-	      if (debug) {
-	        if (override === true) {
-	          _debug(`"${key}" is already defined and WAS overwritten`);
-	        } else {
-	          _debug(`"${key}" is already defined and was NOT overwritten`);
-	        }
-	      }
-	    } else {
-	      processEnv[key] = parsed[key];
-	      populated[key] = parsed[key];
-	    }
-	  }
-
-	  return populated
-	}
-
-	const DotenvModule = {
-	  configDotenv,
-	  _configVault,
-	  _parseVault,
-	  config,
-	  decrypt,
-	  parse,
-	  populate
-	};
-
-	main.exports.configDotenv = DotenvModule.configDotenv;
-	main.exports._configVault = DotenvModule._configVault;
-	main.exports._parseVault = DotenvModule._parseVault;
-	main.exports.config = DotenvModule.config;
-	main.exports.decrypt = DotenvModule.decrypt;
-	main.exports.parse = DotenvModule.parse;
-	main.exports.populate = DotenvModule.populate;
-
-	main.exports = DotenvModule;
-	return main.exports;
+    coreExports.info('✅ \u001b[32;1mFinished Success');
 }
 
-var hasRequiredSrc;
-
-function requireSrc () {
-	if (hasRequiredSrc) return src;
-	hasRequiredSrc = 1;
-	const core = requireCore();
-	const fs = require$$1$6;
-	const dotenv = requireMain()
-
-	;(async () => {
-	    try {
-	        core.info('🏳️ Starting Environment to/from JSON Action');
-
-	        // Inputs
-	        const inputs = getInputs();
-	        core.startGroup('Inputs');
-	        console.log(inputs);
-	        core.endGroup(); // Inputs
-
-	        // Verify Inputs
-	        if (!inputs.sourceData) return core.setFailed(`Missing Input: source`)
-	        if (!['json', 'env'].includes(inputs.sourceType)) {
-	            return core.setFailed(`Invalid source-type: ${inputs.sourceType}`)
-	        }
-	        if (!inputs.outputType) {
-	            inputs.outputType = inputs.sourceType === 'json' ? 'env' : 'json';
-	        }
-	        if (!['json', 'env'].includes(inputs.outputType)) {
-	            return core.setFailed(`Invalid output-type: ${inputs.outputType}`)
-	        }
-	        core.info(`🔁 Converting: ${inputs.sourceType} -> ${inputs.outputType}`);
-
-	        // Process Data
-	        /** @type {Object} */
-	        let source = {};
-	        if (inputs.sourceType === 'json') {
-	            core.info('⌛ Processing Source: JSON');
-	            if (fs.existsSync(inputs.sourceData)) {
-	                core.info('JSON File...');
-	                source = JSON.parse(fs.readFileSync(inputs.sourceData, 'utf-8'));
-	            } else {
-	                core.info('JSON Input...');
-	                source = JSON.stringify(inputs.sourceData);
-	            }
-	        } else if (inputs.sourceType === 'env') {
-	            core.info('⌛ Processing Source: ENV');
-	            if (fs.existsSync(inputs.sourceData)) {
-	                core.info('Environment File...');
-	                source = dotenv.parse(fs.readFileSync(inputs.sourceData, 'utf-8'));
-	            } else {
-	                core.info('Environment Input...');
-	                for (let name of inputs.sourceData.split('\n')) {
-	                    // console.log(`name: ${name} - value: ${process.env[name]}`)
-	                    if (name && process.env[name]) {
-	                        source[name] = process.env[name];
-	                    }
-	                }
-	            }
-	        }
-	        // console.log('-- SOURCE DATA --\n', source, '\n-----------------')
-
-	        /** @type {String} */
-	        let result;
-	        if (inputs.outputType === 'json') {
-	            core.info('Generating Result using: JSON.stringify');
-	            result = JSON.stringify(source);
-	        } else {
-	            core.info('Generating Result using: toEnv');
-	            result = toEnv(source);
-	        }
-	        // console.log(`---- RESULT -----\n${result}\n-----------------`)
-
-	        // Set Secret
-	        if (inputs.sensitive) {
-	            core.info('🕵️ Setting Sensitive');
-	            core.setSecret(result);
-	            for (const value of Object.values(source)) {
-	                // console.log('core.setSecret:', value)
-	                core.setSecret(value.toString());
-	            }
-	        }
-
-	        // Write File
-	        if (inputs.outputFile) {
-	            core.info(`💾 \u001b[32mWriring Results: ${inputs.outputFile}`);
-	            fs.writeFileSync(inputs.outputFile, result + '\n');
-	        }
-
-	        // Set Outputs
-	        core.info('📩 Setting Outputs');
-	        core.setOutput('result', result);
-
-	        // Summary
-	        if (inputs.summary) {
-	            core.info('📝 Writing Job Summary');
-	            try {
-	                await addSummary(inputs, result);
-	            } catch (e) {
-	                console.log(e);
-	                core.error(`Error writing Job Summary ${e.message}`);
-	            }
-	        }
-
-	        core.info('✅ \u001b[32;1mFinished Success');
-	    } catch (e) {
-	        core.debug(e);
-	        core.info(e.message);
-	        core.setFailed(e.message);
-	    }
-	})();
-
-	/**
-	 * @function toEnv
-	 * @param {Object} data
-	 * @return {String}
-	 */
-	function toEnv(data) {
-	    const lines = [];
-	    for (const [key, value] of Object.entries(data)) {
-	        lines.push(`${key}=${value.toString()}`);
-	    }
-	    return lines.join('\n')
-	}
-
-	/**
-	 * @function addSummary
-	 * @param {Object} inputs
-	 * @param {String} result
-	 * @return {Promise<void>}
-	 */
-	async function addSummary(inputs, result) {
-	    core.summary.addRaw(`## Environment to/from JSON Action\n`);
-
-	    if (inputs.outputFile) {
-	        core.summary.addRaw(`💾 ✔️ \`${inputs.outputFile}\`\n`);
-	    }
-
-	    if (!inputs.sensitive) {
-	        core.summary.addRaw('<details><summary>Results</summary>\n\n');
-	        core.summary.addRaw(`\`\`\`${inputs.outputType}\n${result}\n\`\`\``);
-	        core.summary.addRaw('\n\n</details>\n');
-	    }
-
-	    core.summary.addRaw('<details><summary>Inputs</summary>');
-	    core.summary.addTable([
-	        [
-	            { data: 'Input', header: true },
-	            { data: 'Value', header: true },
-	        ],
-	        [{ data: 'sourceData' }, { data: `<code>${inputs.sourceData}</code>` }],
-	        [{ data: 'sourceType' }, { data: `<code>${inputs.sourceType}</code>` }],
-	        [{ data: 'outputType' }, { data: `<code>${inputs.outputType}</code>` }],
-	        [{ data: 'outputFile' }, { data: `<code>${inputs.outputFile}</code>` }],
-	        [{ data: 'sensitive' }, { data: `<code>${inputs.sensitive}</code>` }],
-	        [{ data: 'summary' }, { data: `<code>${inputs.summary}</code>` }],
-	    ]);
-	    core.summary.addRaw('</details>\n');
-
-	    const text = 'View Documentation, Report Issues or Request Features';
-	    const link = 'https://github.com/cssnr/env-json-action';
-	    core.summary.addRaw(`\n[${text}](${link}?tab=readme-ov-file#readme)\n\n---`);
-	    await core.summary.write();
-	}
-
-	/**
-	 * Get Inputs
-	 * @typedef {Object} Inputs
-	 * @property {String} sourceData
-	 * @property {String} sourceType
-	 * @property {String} outputType
-	 * @property {String} outputFile
-	 * @property {Boolean} sensitive
-	 * @property {Boolean} summary
-	 * @return {Inputs}
-	 */
-	function getInputs() {
-	    return {
-	        sourceData: core.getInput('source-data') || core.getInput('source'),
-	        sourceType: core.getInput('source-type') || core.getInput('type'),
-	        outputType: core.getInput('output-type') || core.getInput('output'),
-	        outputFile: core.getInput('output-file') || core.getInput('dest'),
-	        sensitive: core.getBooleanInput('sensitive'),
-	        summary: core.getBooleanInput('summary'),
-	    }
-	}
-	return src;
+/**
+ * @function toEnv
+ * @param {Object} data
+ * @return {String}
+ */
+function toEnv(data) {
+    const lines = [];
+    for (const [key, value] of Object.entries(data)) {
+        lines.push(`${key}=${value.toString()}`);
+    }
+    return lines.join('\n')
 }
 
-var srcExports = requireSrc();
-var index = /*@__PURE__*/getDefaultExportFromCjs(srcExports);
+/**
+ * @function addSummary
+ * @param {Object} inputs
+ * @param {String} result
+ * @return {Promise<void>}
+ */
+async function addSummary(inputs, result) {
+    coreExports.summary.addRaw(`## Environment to/from JSON Action\n`);
 
-module.exports = index;
+    if (inputs.outputFile) {
+        coreExports.summary.addRaw(`💾 ✔️ \`${inputs.outputFile}\`\n`);
+    }
+
+    if (!inputs.sensitive) {
+        coreExports.summary.addRaw('<details><summary>Results</summary>\n\n');
+        coreExports.summary.addRaw(`\`\`\`${inputs.outputType}\n${result}\n\`\`\``);
+        coreExports.summary.addRaw('\n\n</details>\n');
+    }
+
+    coreExports.summary.addRaw('<details><summary>Inputs</summary>');
+    coreExports.summary.addTable([
+        [
+            { data: 'Input', header: true },
+            { data: 'Value', header: true },
+        ],
+        [{ data: 'sourceData' }, { data: `<code>${inputs.sourceData}</code>` }],
+        [{ data: 'sourceType' }, { data: `<code>${inputs.sourceType}</code>` }],
+        [{ data: 'outputType' }, { data: `<code>${inputs.outputType}</code>` }],
+        [{ data: 'outputFile' }, { data: `<code>${inputs.outputFile}</code>` }],
+        [{ data: 'sensitive' }, { data: `<code>${inputs.sensitive}</code>` }],
+        [{ data: 'summary' }, { data: `<code>${inputs.summary}</code>` }],
+    ]);
+    coreExports.summary.addRaw('</details>\n');
+
+    const text = 'View Documentation, Report Issues or Request Features';
+    const link = 'https://github.com/cssnr/env-json-action';
+    coreExports.summary.addRaw(`\n[${text}](${link}?tab=readme-ov-file#readme)\n\n---`);
+    await coreExports.summary.write();
+}
+
+try {
+    await main();
+} catch (e) {
+    coreExports.debug(e);
+    coreExports.info(e.message);
+    coreExports.setFailed(e.message);
+}
